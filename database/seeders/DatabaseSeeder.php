@@ -14,9 +14,17 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $user = \App\Models\User::create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('Hello@123!'),
+        ]);
+
+        if ($user)
+        {
+            $token = $user->createToken('Api Auth Token');
+            $user->token = $token->plainTextToken;
+            $user->save();
+        }
     }
 }
