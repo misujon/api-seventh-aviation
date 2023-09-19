@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FlightController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->prefix('amadeus')->group(function(){
-    Route::post('/flight/search', [FlightController::class, 'search']);
+Route::middleware('auth:sanctum')->prefix('flight')->group(function(){
+    Route::post('/search', [FlightController::class, 'search']);
+    Route::post('/pricing', [FlightController::class, 'pricing']);
 });
