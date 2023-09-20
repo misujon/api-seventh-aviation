@@ -15,6 +15,7 @@ class ApiCredential extends Model
         'api_secret',
         'base_url',
         'token',
+        'token_expiration',
         'status'
     ];
 }

@@ -22,7 +22,9 @@ class PricingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'flightOffers' => 'required|json'
+            'bags' => 'nullable|in:true,false',
+            'bags_qty' => 'required_if:bags,true|integer|gt:0',
+            'fare_details' => 'nullable|in:true,false'
         ];
     }
 }

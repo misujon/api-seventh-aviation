@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('api_secret');
             $table->string('base_url');
             $table->string('token')->nullable();
+            $table->dateTime('token_expiration')->nullable();
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });

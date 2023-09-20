@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PricingRequest;
 use Exception;
 use Illuminate\Http\Request;
 use App\Constants\AppConstants;
@@ -42,22 +43,19 @@ class FlightController extends Controller
         }
     }
 
-    public function pricing(SearchRequest $request)
+    public function pricing($searchId, $id, PricingRequest $request)
     {
         try
         {
-            // $result = $this->flightService->pricing(
-            //     $request->from,
-            //     $request->to,
-            //     $request->departure,
-            //     (!empty($request->arrival))?$request->return:null,
-            //     (!empty($request->adult))?$request->adult:1,
-            //     (!empty($request->child))?$request->child:0,
-            //     (!empty($request->infant))?$request->infant:0,
-            //     $request->trip_type
-            // );
+            $result = $this->flightService->pricing(
+                $searchId,
+                $id,
+                ((!empty($request->bags) && $request->bags == 'true')?true:false),
+                (!empty($request->bags_qty))?$request->bags_qty:0,
+                (!empty($request->fare_details) && $request->fare_details == 'true')?true:false
+            );
 
-            // return AppConstants::apiResponse(200, 'Flight search result!', $result);
+            return AppConstants::apiResponse(200, 'Flight pricing result!', $result);
         }
         catch(Exception $e)
         {

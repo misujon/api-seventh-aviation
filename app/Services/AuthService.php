@@ -31,7 +31,20 @@ class AuthService
     {
         try
         {
-            if (!empty($this->token) && !empty($this->token->token) && $new === false) return $this->token;
+            if ($retry === 3) return false;
+
+            $client = new Client();
+            if (!empty($this->token) && !empty($this->token->token) && $new === false)
+            {
+                if (strtotime($this->token->token_expiration) > time())
+                {
+                    return $this->token;
+                }
+                else
+                {
+                    return $this->auth(true, ($retry+1));
+                }
+            }
 
             if (empty($this->apiKey) || empty($this->apiSecret))
             {
@@ -39,7 +52,6 @@ class AuthService
                 return false;
             }
 
-            $client = new Client();
             $headers = [
                 'Content-Type' => 'application/x-www-form-urlencoded'
             ];
@@ -54,18 +66,20 @@ class AuthService
             
             $request = new Request('POST', $this->url.'/v1/security/oauth2/token', $headers);
             $res = $client->sendAsync($request, $options)->wait();
+
             $jsonResponse = json_decode($res->getBody()->getContents(), true);
 
             $this->token->token = $jsonResponse['access_token'];
+            $this->token->token_expiration = date('Y-m-d H:i:s', (time()+$jsonResponse['expires_in']));
             $this->token->save();
             return $this->token;
         }
         catch (\GuzzleHttp\Exception\RequestException $e)
         {
-            Log::error("Authentication api request exception!", [$e]);
+            Log::info("Authentication api request exception! (Reauth) ===================");
             if ($e->hasResponse() && $e->getResponse()->getReasonPhrase() == "Unauthorized")
             {
-                return $this->auth(true);
+                return $this->auth(true, ($retry+1));
             }
 
             return false;

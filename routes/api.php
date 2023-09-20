@@ -17,5 +17,5 @@ use App\Http\Controllers\FlightController;
 
 Route::middleware('auth:sanctum')->prefix('flight')->group(function(){
     Route::post('/search', [FlightController::class, 'search']);
-    Route::post('/pricing', [FlightController::class, 'pricing']);
+    Route::post('/pricing/{searchId}/flight/{id}', [FlightController::class, 'pricing']);
 });

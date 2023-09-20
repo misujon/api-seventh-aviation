@@ -2,11 +2,9 @@
 
 namespace App\Services;
 use GuzzleHttp\Client;
-use App\Models\ApiCredential;
-use App\Constants\AppConstants;
 use Exception;
 use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class FlightService
 {
@@ -28,6 +26,12 @@ class FlightService
         string $tripType = 'oneway'
     )
     {
+        $searchId = $this->generateSearchId();
+        if (Cache::has('flight-search:'.$searchId))
+        {
+            return Cache::get('flight-search:'.$searchId);
+        }
+
         $auth = $this->authService->auth();
         if ($auth === false) throw new Exception("Error to communicate with amadeus!");
         
@@ -48,6 +52,90 @@ class FlightService
         if (!empty($infant)) $query['infants'] = $infant;
 
         $request = new Request('GET', $auth->base_url.'/v2/shopping/flight-offers?'.http_build_query($query), $headers);
+        $res = $client->sendAsync($request)->wait();
+        $jsonResponse = json_decode($res->getBody()->getContents(), true);
+        $jsonResponse = collect($jsonResponse);
+        $jsonResponse->put('searchId', $searchId);
+
+        Cache::put('flight-search:'.$searchId, $jsonResponse);
+
+        return $jsonResponse;
+    }
+
+    public function generateSearchId()
+    {
+        $req = request();
+        $dataReq = implode('-', $req->all());
+        $clientIp = $req->ip();
+        return md5($dataReq.'/'.$clientIp);
+    }
+
+    public function pricing(string $searchId, int $flightId, bool $bags = false, int $bagsQty = 0, bool $details = false)
+    {
+        if (!Cache::has('flight-search:'.$searchId))
+        {
+            throw new Exception('Error to find flight for pricing!');
+        }
+
+        $search = Cache::get('flight-search:'.$searchId);
+        $search = collect($search['data'])->filter(function($item) use ($flightId) {
+            return $item['id'] == $flightId;
+        });
+
+        $auth = $this->authService->auth();
+        $client = new Client();
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-HTTP-Method-Override' => 'GET',
+            'Authorization' => 'Bearer '.$auth->token
+        ];
+
+        // Checking for baggages.
+        if ($bagsQty > 0 && $bags)
+        {
+            $search = $search->map(function($item) use ($bagsQty) {
+                if (isset($item['travelerPricings'][0]) && isset($item['travelerPricings'][0]['fareDetailsBySegment']))
+                {
+                    foreach($item['travelerPricings'][0]['fareDetailsBySegment'] as $key => $segment)
+                    {
+                        $item['travelerPricings'][0]['fareDetailsBySegment'][$key]['additionalServices'] = [
+                            'chargeableCheckedBags' => [
+                                'quantity' => $bagsQty
+                            ]
+                        ];
+                    }
+                }
+    
+                return $item;
+            });
+        }
+
+        $body = [
+            'data' => [
+                'type' => 'flight-offers-pricing',
+                'flightOffers' => [$search->first()]
+            ]
+        ];
+
+        $body = json_encode($body);
+        if ($bags && $details)
+        {
+            $bagsInclude = '?'.http_build_query(['include' => 'bags,detailed-fare-rules']); 
+        }
+        elseif ($bags)
+        {
+            $bagsInclude = '?'.http_build_query(['include' => 'bags']); 
+        }
+        elseif ($details)
+        {
+            $bagsInclude = '?'.http_build_query(['include' => 'detailed-fare-rules']); 
+        }
+        else
+        {
+            $bagsInclude = '';
+        }
+        
+        $request = new Request('POST', $auth->base_url.'/v1/shopping/flight-offers/pricing'.$bagsInclude, $headers, $body);
         $res = $client->sendAsync($request)->wait();
         $jsonResponse = json_decode($res->getBody()->getContents(), true);
 
