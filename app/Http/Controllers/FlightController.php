@@ -63,4 +63,19 @@ class FlightController extends Controller
             return AppConstants::apiResponse(404, 'No flight found!');
         }
     }
+
+    public function createOrder($flightId, PricingRequest $request)
+    {
+        try
+        {
+            // $result = $this->flightService->;
+
+            // return AppConstants::apiResponse(200, 'Flight booking completed successfully!', $result);
+        }
+        catch(Exception $e)
+        {
+            Log::error('Error in create order.', [$e]);
+            return AppConstants::apiResponse(404, 'Error to book flight! Please try again with valid data.');
+        }
+    }
 }

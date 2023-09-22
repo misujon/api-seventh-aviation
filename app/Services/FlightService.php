@@ -110,10 +110,11 @@ class FlightService
             });
         }
 
+        $flightData = $search->first();
         $body = [
             'data' => [
                 'type' => 'flight-offers-pricing',
-                'flightOffers' => [$search->first()]
+                'flightOffers' => [$flightData]
             ]
         ];
 
@@ -139,6 +140,21 @@ class FlightService
         $res = $client->sendAsync($request)->wait();
         $jsonResponse = json_decode($res->getBody()->getContents(), true);
 
+        $flightIdString = md5($searchId.$flightId);
+        $jsonResponse = collect($jsonResponse)->map(function($item, $key) use($flightIdString){
+            if ($key === "data")
+            {
+                $item['flightOffers'][0]['flightId'] = $flightIdString;
+                ksort($item['flightOffers'][0]);
+            }
+            return $item;
+        });
+
         return $jsonResponse;
+    }
+
+    public function createOrder()
+    {
+
     }
 }
