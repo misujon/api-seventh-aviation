@@ -6,6 +6,7 @@ use App\Http\Requests\PricingRequest;
 use Exception;
 use Illuminate\Http\Request;
 use App\Constants\AppConstants;
+use App\Http\Requests\BookingRequest;
 use App\Services\FlightService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\SearchRequest;
@@ -64,7 +65,7 @@ class FlightController extends Controller
         }
     }
 
-    public function createOrder($flightId, PricingRequest $request)
+    public function createOrder($flightId, BookingRequest $request)
     {
         try
         {
