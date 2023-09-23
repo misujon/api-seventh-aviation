@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Services;
+
+use App\Models\FlightBooking;
 use GuzzleHttp\Client;
 use Exception;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class FlightService
@@ -149,6 +152,36 @@ class FlightService
             }
             return $item;
         });
+
+        $flightDetails = $jsonResponse['data']['flightOffers'];
+        $bookingReq = $jsonResponse['data']['bookingRequirements'];
+
+        // Saving the pricing data
+        $bookingData = [
+            'search_id' => $searchId,
+            'flight_id' => (isset($flightDetails[0]))?$flightDetails[0]['id']:"None",
+            'flight_id_string' => $flightIdString,
+            'price_currency' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['currency']:null,
+            'base_price' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['base']:null,
+            'total_price' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['total']:null,
+            'grand_total_price' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['grandTotal']:null,
+            'billing_currency' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['billingCurrency']:null,
+            'last_ticketing_date' => (isset($flightDetails[0]))?$flightDetails[0]['lastTicketingDate']:"None",
+            'instant_ticketing' => (isset($flightDetails[0]) && $flightDetails[0]['instantTicketingRequired'] == true)?'TRUE':"FALSE",
+            'source' => (isset($flightDetails[0]['source']))?$flightDetails[0]['source']:null,
+            'itineraries' => (isset($flightDetails[0]['itineraries']))?json_encode($flightDetails[0]['itineraries']):null,
+            'pricing' => (isset($flightDetails[0]['price']))?json_encode($flightDetails[0]['price']):null,
+            'traveler_pricing' => (isset($flightDetails[0]['travelerPricings']))?json_encode($flightDetails[0]['travelerPricings']):null,
+            'booking_requirements' => json_encode($bookingReq),
+            'dictionaries' => (isset($jsonResponse['dictionaries']))?json_encode($jsonResponse['dictionaries']):null,
+            'fare_rules' => (isset($jsonResponse['included']['detailed-fare-rules']))?json_encode($jsonResponse['included']['detailed-fare-rules']):null,
+            'total_response' => json_encode($jsonResponse)
+        ];
+
+        FlightBooking::updateOrCreate(
+            ['search_id' => $searchId, 'flight_id_string' => $flightIdString],
+            $bookingData
+        );
 
         return $jsonResponse;
     }

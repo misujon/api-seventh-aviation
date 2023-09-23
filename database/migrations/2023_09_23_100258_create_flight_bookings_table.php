@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('customer_id')->nullable();
             $table->string('customer_email')->nullable();
             $table->string('pnr')->nullable();
-            $table->unsignedBigInteger('price_currency');
-            $table->unsignedBigInteger('base_price');
-            $table->unsignedBigInteger('total_price');
-            $table->unsignedBigInteger('grand_total_price');
-            $table->unsignedBigInteger('billing_currency');
+            $table->string('price_currency', 20);
+            $table->unsignedFloat('base_price', 20, 2);
+            $table->unsignedFloat('total_price', 20, 2);
+            $table->unsignedFloat('grand_total_price', 20, 2);
+            $table->string('billing_currency', 20);
             $table->dateTime('last_ticketing_date');
             $table->enum('instant_ticketing', ['TRUE', 'FALSE']);
             $table->string('source', 25);
@@ -32,6 +32,8 @@ return new class extends Migration
             $table->json('traveler_pricing');
             $table->json('booking_requirements')->nullable();
             $table->json('dictionaries')->nullable();
+            $table->json('fare_rules')->nullable();
+            $table->json('total_response')->nullable();
             $table->enum('status', ['PENDING', 'BOOKED', 'TICKETED', 'CANCELLED'])->default('PENDING');
             $table->string('cancellation_note')->nullable();
             $table->timestamps();

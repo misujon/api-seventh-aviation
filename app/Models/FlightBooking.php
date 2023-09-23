@@ -29,6 +29,8 @@ class FlightBooking extends Model
         'traveler_pricing',
         'booking_requirements',
         'dictionaries',
+        'fare_rules',
+        'total_response',
         'status',
         'cancellation_note'
     ];
