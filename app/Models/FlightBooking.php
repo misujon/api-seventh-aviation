@@ -16,6 +16,9 @@ class FlightBooking extends Model
         'customer_id',
         'customer_email',
         'pnr',
+        'booking_id',
+        'booking_office_id',
+        'associated_records',
         'price_currency',
         'base_price',
         'total_price',
@@ -24,6 +27,7 @@ class FlightBooking extends Model
         'last_ticketing_date',
         'instant_ticketing',
         'source',
+        'flight_offers',
         'itineraries',
         'pricing',
         'traveler_pricing',
@@ -31,6 +35,8 @@ class FlightBooking extends Model
         'dictionaries',
         'fare_rules',
         'total_response',
+        'passengers',
+        'booking_response',
         'status',
         'cancellation_note'
     ];

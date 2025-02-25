@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\AppConstants;
 use App\Models\FlightBooking;
 use GuzzleHttp\Client;
 use Exception;
@@ -57,7 +58,9 @@ class FlightService
         $request = new Request('GET', $auth->base_url.'/v2/shopping/flight-offers?'.http_build_query($query), $headers);
         $res = $client->sendAsync($request)->wait();
         $jsonResponse = json_decode($res->getBody()->getContents(), true);
-        $jsonResponse = collect($jsonResponse);
+        $jsonResponse = collect($jsonResponse)->filter(function($value, $key){
+            return $key !== "meta";
+        });
         $jsonResponse->put('searchId', $searchId);
 
         Cache::put('flight-search:'.$searchId, $jsonResponse);
@@ -169,6 +172,7 @@ class FlightService
             'last_ticketing_date' => (isset($flightDetails[0]))?$flightDetails[0]['lastTicketingDate']:"None",
             'instant_ticketing' => (isset($flightDetails[0]) && $flightDetails[0]['instantTicketingRequired'] == true)?'TRUE':"FALSE",
             'source' => (isset($flightDetails[0]['source']))?$flightDetails[0]['source']:null,
+            'flight_offers' => (isset($flightDetails))?json_encode($flightDetails):null,
             'itineraries' => (isset($flightDetails[0]['itineraries']))?json_encode($flightDetails[0]['itineraries']):null,
             'pricing' => (isset($flightDetails[0]['price']))?json_encode($flightDetails[0]['price']):null,
             'traveler_pricing' => (isset($flightDetails[0]['travelerPricings']))?json_encode($flightDetails[0]['travelerPricings']):null,
@@ -186,8 +190,59 @@ class FlightService
         return $jsonResponse;
     }
 
-    public function createOrder()
+    public function createOrder(string $searchId, int $flightId, array $passengerData)
     {
+        $getPricingData = FlightBooking::where('search_id', $searchId)->where('flight_id_string', md5($searchId.$flightId))->first();
+        if (!$getPricingData) throw new Exception('Error to find flight data!');
 
+        $auth = $this->authService->auth();
+        $client = new Client();
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer '.$auth->token
+        ];
+
+        $flightOffersData = json_decode($getPricingData->flight_offers, true);
+        $body = [
+            'data' => [
+                'type' => 'flight-order',
+                'flightOffers' => $flightOffersData,
+                'travelers' => $passengerData
+            ]
+        ];
+        $body = json_encode($body);
+
+        try
+        {
+            $request = new Request('POST', $auth->base_url.'/v1/booking/flight-orders', $headers, $body);
+            $res = $client->sendAsync($request)->wait();
+            $jsonResponse = json_decode($res->getBody()->getContents(), true);
+
+            $getPricingData->pnr = $jsonResponse['data']['associatedRecords'][0]['reference'];
+            $getPricingData->booking_id = $jsonResponse['data']['id'];
+            $getPricingData->booking_office_id = $jsonResponse['data']['queuingOfficeId'];
+            $getPricingData->associated_records = json_encode($jsonResponse['data']['associatedRecords']);
+            $getPricingData->passengers = json_encode($jsonResponse['data']['travelers']);
+            $getPricingData->booking_response = json_encode($jsonResponse);
+            $getPricingData->status = AppConstants::BOOKING_STATUS_BOOKED;
+            $getPricingData->save();
+
+            return [
+                'booking_id' => $getPricingData->booking_id,
+                'pnr' => $getPricingData->pnr,
+                'flight_info' => json_decode($getPricingData->flight_offers, true),
+                'source' => $getPricingData->source,
+                'total_price' => $getPricingData->grand_total_price,
+                'currency' => $getPricingData->billing_currency,
+                'instant_ticketing' => $getPricingData->instant_ticketing,
+                'status' => $getPricingData->status,
+                'created_at' => $getPricingData->updated_at
+            ];
+        }
+        catch(Exception $e)
+        {
+            throw new Exception($e->getMessage());
+        }
     }
 }

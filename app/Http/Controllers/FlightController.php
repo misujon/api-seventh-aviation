@@ -65,13 +65,16 @@ class FlightController extends Controller
         }
     }
 
-    public function createOrder($flightId, BookingRequest $request)
+    public function createOrder($searchId, $flightId, BookingRequest $request)
     {
         try
         {
-            // $result = $this->flightService->;
-
-            // return AppConstants::apiResponse(200, 'Flight booking completed successfully!', $result);
+            $result = $this->flightService->createOrder(
+                $searchId,
+                $flightId,
+                $request->all()['passengers']
+            );
+            return AppConstants::apiResponse(200, 'Flight booking successful!', $result);
         }
         catch(Exception $e)
         {
