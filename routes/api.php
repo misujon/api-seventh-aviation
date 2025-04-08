@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->prefix('flight')->group(function(){
     Route::post('/search', [FlightController::class, 'search']);
     Route::post('/pricing/{searchId}/flight/{id}', [FlightController::class, 'pricing']);
     Route::post('/booking/{searchId}/{flightId}', [FlightController::class, 'createOrder']);
+    Route::post('/payment/{searchId}/{flightId}', [FlightController::class, 'makePayment']);
 });

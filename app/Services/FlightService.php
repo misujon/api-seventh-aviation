@@ -9,14 +9,20 @@ use Exception;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Library\SslCommerz\SslCommerzNotification;
 
 class FlightService
 {
     private $authService;
+    private $payUrl;
+    private $payStoreId;
+    private $payStorePass;
 
     public function __construct(AuthService $service)
     {
         $this->authService = $service;
+        $this->payStoreId = env('SSLCZ_STORE_ID');
+        $this->payStorePass = env('SSLCZ_STORE_PASSWORD');
     }
 
     public function search(
@@ -244,5 +250,45 @@ class FlightService
         {
             throw new Exception($e->getMessage());
         }
+    }
+
+    public function makePayment(string $searchId, int $flightId): array
+    {
+        $getBookingData = FlightBooking::where('search_id', $searchId)
+                            ->where('flight_id_string', md5($searchId.$flightId))
+                            ->where('status', AppConstants::BOOKING_STATUS_BOOKED)
+                            ->first();
+        if (!$getBookingData) throw new Exception('Error to find flight data!');
+
+        // dd($getBookingData->passengers);
+
+        $post_data = [];
+        $post_data['total_amount'] = $getBookingData->grand_total_price; # You cant not pay less than 10
+        $post_data['currency'] = $getBookingData->billing_currency;
+        $post_data['tran_id'] = $getBookingData->booking_id; // tran_id must be unique
+
+        # CUSTOMER INFORMATION
+        $post_data['cus_name'] = $getBookingData->passengers[0]['name']['firstName'].' '.$getBookingData->passengers[0]['name']['lastName'];
+        $post_data['cus_email'] = $getBookingData->passengers[0]['contact']['emailAddress'];
+        $post_data['cus_add1'] = $getBookingData->passengers[0]['documents'][0]['issuanceLocation'].', '.$getBookingData->passengers[0]['documents'][0]['issuanceCountry'];
+        $post_data['cus_city'] = $getBookingData->passengers[0]['documents'][0]['issuanceLocation'];
+        $post_data['cus_state'] = $getBookingData->passengers[0]['documents'][0]['issuanceLocation'];
+        $post_data['cus_country'] = "Bangladesh";
+        $post_data['cus_phone'] = $getBookingData->passengers[0]['contact']['phones'][0]['countryCallingCode'].$getBookingData->passengers[0]['contact']['phones'][0]['number'];
+
+        $post_data['shipping_method'] = "NO";
+        $post_data['product_name'] = "Flight Ticket: ".$getBookingData->pnr;
+        $post_data['product_category'] = "Air Ticket";
+        $post_data['product_profile'] = "general";
+
+        $post_data['success_url'] = "http://localhost:8000/success";
+        $post_data['fail_url'] = "http://localhost:8000/fail";
+        $post_data['cancel_url'] = "http://localhost:8000/cancel";
+
+        $sslc = new SslCommerzNotification();
+        # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
+        $payment_options = $sslc->makePayment($post_data, 'checkout');
+
+        return json_decode($payment_options, true);
     }
 }

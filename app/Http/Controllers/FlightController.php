@@ -82,4 +82,21 @@ class FlightController extends Controller
             return AppConstants::apiResponse(404, 'Error to book flight! Please try again with valid data.');
         }
     }
+
+    public function makePayment($searchId, $flightId)
+    {
+        try
+        {
+            $result = $this->flightService->makePayment(
+                $searchId,
+                $flightId
+            );
+            return AppConstants::apiResponse(200, 'Payment request successful!', $result);
+        }
+        catch(Exception $e)
+        {
+            Log::error('Error in make payment.', [$e]);
+            return AppConstants::apiResponse(404, 'Error to make payment! Please try again with valid data.');
+        }
+    }
 }
