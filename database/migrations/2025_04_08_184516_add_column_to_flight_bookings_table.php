@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('pax_kids')->nullable()->after('pax_childs');
             $table->unsignedInteger('pax_infants')->nullable()->after('pax_kids');
             $table->enum('payment_status', ['PENDING', 'PROCESSING', 'SUCCESS', 'FAILED'])->default('PENDING')->after('status');
-            $table->text('payment_id')->nullable()->unique()->after('payment_status');
+            $table->string('payment_id')->nullable()->unique()->after('payment_status');
             $table->text('payment_url')->nullable()->after('payment_id');
             $table->longText('payment_response')->nullable()->after('payment_url');
             $table->text('payment_failed_reason')->nullable()->after('payment_response');
