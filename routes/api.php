@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VerifyPaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,8 @@ use App\Http\Controllers\FlightController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('/user/login', [AuthController::class, 'index']);
 
 Route::middleware('auth:sanctum')->prefix('flight')->group(function(){
     Route::post('/search', [FlightController::class, 'search']);

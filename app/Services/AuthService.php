@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Services;
+use App\Models\User;
 use GuzzleHttp\Client;
 use App\Models\ApiCredential;
 use App\Constants\AppConstants;
 use Exception;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class AuthService
@@ -89,5 +91,19 @@ class AuthService
             Log::error("Api authentication error!", [$e]);
             return false;
         }
+    }
+
+    public function userLogin($request): array
+    {
+        $customer = User::where('email', $request->email)->first();
+        if (!Hash::check($request->password, $customer->password)) throw new Exception("Password is not correct!");
+        $token = $customer->createToken($request->email);
+
+        return [
+            'status' => 200,
+            'message' => 'Login successful',
+            'token' => $token->plainTextToken,
+            'customer' => $customer
+        ];
     }
 }
