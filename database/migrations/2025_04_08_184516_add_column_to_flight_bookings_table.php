@@ -12,6 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('flight_bookings', function (Blueprint $table) {
+            $table->enum('trip_type', ['ONE_WAY', 'ROUND_TRIP', 'MULTI_STOP'])->default('ONE_WAY')->after('flight_id_string');
+            $table->unsignedInteger('pax_adults')->default(1)->after('trip_type');
+            $table->unsignedInteger('pax_childs')->nullable()->after('pax_adults');
+            $table->unsignedInteger('pax_kids')->nullable()->after('pax_childs');
+            $table->unsignedInteger('pax_infants')->nullable()->after('pax_kids');
             $table->enum('payment_status', ['PENDING', 'PROCESSING', 'SUCCESS', 'FAILED'])->default('PENDING')->after('status');
             $table->text('payment_id')->nullable()->unique()->after('payment_status');
             $table->text('payment_url')->nullable()->after('payment_id');

@@ -83,14 +83,11 @@ class FlightController extends Controller
         }
     }
 
-    public function makePayment($searchId, $flightId)
+    public function makePayment($bookingId)
     {
         try
         {
-            $result = $this->flightService->makePayment(
-                $searchId,
-                $flightId
-            );
+            $result = $this->flightService->makePayment($bookingId);
             return AppConstants::apiResponse(200, 'Payment request successful!', $result);
         }
         catch(Exception $e)

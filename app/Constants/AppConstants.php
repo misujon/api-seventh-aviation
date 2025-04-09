@@ -13,6 +13,12 @@ class AppConstants
     public const BOOKING_STATUS_TICKETED = 'TICKETED';
     public const BOOKING_STATUS_CANCELLED = 'CANCELLED';
 
+    public const PAY_STATUS_PENDING = 'PENDING';
+    public const PAY_STATUS_PROCESSING = 'PROCESSING';
+    public const PAY_STATUS_SUCCESS = 'SUCCESS';
+    public const PAY_STATUS_FAILED = 'FAILED';
+    public const PAY_STATUS_COMPLETE = 'COMPLETE';
+
     public static function apiResponse($code, $message, $data = [])
     {
         return [

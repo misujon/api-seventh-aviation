@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Constants\AppConstants;
 use App\Models\FlightBooking;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Exception;
 use GuzzleHttp\Psr7\Request;
@@ -68,6 +69,10 @@ class FlightService
             return $key !== "meta";
         });
         $jsonResponse->put('searchId', $searchId);
+        $jsonResponse->put('searchType', $tripType);
+        $jsonResponse->put('paxAdult', $adult);
+        $jsonResponse->put('paxChild', $child);
+        $jsonResponse->put('paxInfant', $infant);
 
         Cache::put('flight-search:'.$searchId, $jsonResponse);
 
@@ -90,6 +95,10 @@ class FlightService
         }
 
         $search = Cache::get('flight-search:'.$searchId);
+        $searchType = $search['searchType'];
+        $searchPaxAdult = $search['paxAdult'];
+        $searchPaxChild = $search['paxChild'];
+        $searchPaxInfant = $search['paxInfant'];
         $search = collect($search['data'])->filter(function($item) use ($flightId) {
             return $item['id'] == $flightId;
         });
@@ -165,11 +174,22 @@ class FlightService
         $flightDetails = $jsonResponse['data']['flightOffers'];
         $bookingReq = $jsonResponse['data']['bookingRequirements'];
 
+        if ($searchType == "oneway")
+            $flightType = "ONE_WAY";
+        elseif ($searchType == "roundtrip")
+            $flightType = "ROUND_TRIP";
+        else
+            $flightType = "MULTI_STOP";
+
         // Saving the pricing data
         $bookingData = [
             'search_id' => $searchId,
             'flight_id' => (isset($flightDetails[0]))?$flightDetails[0]['id']:"None",
             'flight_id_string' => $flightIdString,
+            'trip_type' => $flightType,
+            'pax_adults' => $searchPaxAdult,
+            'pax_childs' => $searchPaxChild,
+            'pax_infants' => $searchPaxInfant,
             'price_currency' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['currency']:null,
             'base_price' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['base']:null,
             'total_price' => (isset($flightDetails[0]['price']))?$flightDetails[0]['price']['total']:null,
@@ -178,14 +198,14 @@ class FlightService
             'last_ticketing_date' => (isset($flightDetails[0]))?$flightDetails[0]['lastTicketingDate']:"None",
             'instant_ticketing' => (isset($flightDetails[0]) && $flightDetails[0]['instantTicketingRequired'] == true)?'TRUE':"FALSE",
             'source' => (isset($flightDetails[0]['source']))?$flightDetails[0]['source']:null,
-            'flight_offers' => (isset($flightDetails))?json_encode($flightDetails):null,
-            'itineraries' => (isset($flightDetails[0]['itineraries']))?json_encode($flightDetails[0]['itineraries']):null,
-            'pricing' => (isset($flightDetails[0]['price']))?json_encode($flightDetails[0]['price']):null,
-            'traveler_pricing' => (isset($flightDetails[0]['travelerPricings']))?json_encode($flightDetails[0]['travelerPricings']):null,
-            'booking_requirements' => json_encode($bookingReq),
-            'dictionaries' => (isset($jsonResponse['dictionaries']))?json_encode($jsonResponse['dictionaries']):null,
-            'fare_rules' => (isset($jsonResponse['included']['detailed-fare-rules']))?json_encode($jsonResponse['included']['detailed-fare-rules']):null,
-            'total_response' => json_encode($jsonResponse)
+            'flight_offers' => (isset($flightDetails))?($flightDetails):null,
+            'itineraries' => (isset($flightDetails[0]['itineraries']))?($flightDetails[0]['itineraries']):null,
+            'pricing' => (isset($flightDetails[0]['price']))?($flightDetails[0]['price']):null,
+            'traveler_pricing' => (isset($flightDetails[0]['travelerPricings']))?($flightDetails[0]['travelerPricings']):null,
+            'booking_requirements' => ($bookingReq),
+            'dictionaries' => (isset($jsonResponse['dictionaries']))?($jsonResponse['dictionaries']):null,
+            'fare_rules' => (isset($jsonResponse['included']['detailed-fare-rules']))?($jsonResponse['included']['detailed-fare-rules']):null,
+            'total_response' => ($jsonResponse)
         ];
 
         FlightBooking::updateOrCreate(
@@ -198,7 +218,10 @@ class FlightService
 
     public function createOrder(string $searchId, int $flightId, array $passengerData)
     {
-        $getPricingData = FlightBooking::where('search_id', $searchId)->where('flight_id_string', md5($searchId.$flightId))->first();
+        $getPricingData = FlightBooking::where('search_id', $searchId)
+                            ->where('flight_id_string', md5($searchId.$flightId))
+                            ->where('status', AppConstants::BOOKING_STATUS_PENDING)
+                            ->first();
         if (!$getPricingData) throw new Exception('Error to find flight data!');
 
         $auth = $this->authService->auth();
@@ -209,7 +232,7 @@ class FlightService
             'Authorization' => 'Bearer '.$auth->token
         ];
 
-        $flightOffersData = json_decode($getPricingData->flight_offers, true);
+        $flightOffersData = $getPricingData->flight_offers;
         $body = [
             'data' => [
                 'type' => 'flight-order',
@@ -218,6 +241,17 @@ class FlightService
             ]
         ];
         $body = json_encode($body);
+
+        $getPricingData->customer_email = $passengerData[0]['contact']['emailAddress'];
+        $getPricingData->customer_name = $passengerData[0]['name']['firstName'].' '.$passengerData[0]['name']['lastName'];
+        $getPricingData->customer_address = $passengerData[0]['documents'][0]['issuanceLocation'].', '.$passengerData[0]['documents'][0]['issuanceCountry'];
+        $getPricingData->customer_city = $passengerData[0]['documents'][0]['issuanceLocation'];
+        $getPricingData->customer_state = $passengerData[0]['documents'][0]['issuanceLocation'];
+        $getPricingData->customer_country = $passengerData[0]['documents'][0]['issuanceCountry'];
+        $getPricingData->customer_phone = $passengerData[0]['contact']['phones'][0]['countryCallingCode'].$passengerData[0]['contact']['phones'][0]['number'];
+        $getPricingData->customer_product_category = 'Air Ticket';
+        $getPricingData->customer_product_profile = 'airline-tickets';
+        $getPricingData->save();
 
         try
         {
@@ -228,16 +262,16 @@ class FlightService
             $getPricingData->pnr = $jsonResponse['data']['associatedRecords'][0]['reference'];
             $getPricingData->booking_id = $jsonResponse['data']['id'];
             $getPricingData->booking_office_id = $jsonResponse['data']['queuingOfficeId'];
-            $getPricingData->associated_records = json_encode($jsonResponse['data']['associatedRecords']);
-            $getPricingData->passengers = json_encode($jsonResponse['data']['travelers']);
-            $getPricingData->booking_response = json_encode($jsonResponse);
+            $getPricingData->associated_records = $jsonResponse['data']['associatedRecords'];
+            $getPricingData->passengers = $jsonResponse['data']['travelers'];
+            $getPricingData->booking_response = $jsonResponse;
             $getPricingData->status = AppConstants::BOOKING_STATUS_BOOKED;
             $getPricingData->save();
 
             return [
                 'booking_id' => $getPricingData->booking_id,
                 'pnr' => $getPricingData->pnr,
-                'flight_info' => json_decode($getPricingData->flight_offers, true),
+                'flight_info' => $getPricingData->flight_offers,
                 'source' => $getPricingData->source,
                 'total_price' => $getPricingData->grand_total_price,
                 'currency' => $getPricingData->billing_currency,
@@ -252,15 +286,12 @@ class FlightService
         }
     }
 
-    public function makePayment(string $searchId, int $flightId): array
+    public function makePayment(string $bookingId): array
     {
-        $getBookingData = FlightBooking::where('search_id', $searchId)
-                            ->where('flight_id_string', md5($searchId.$flightId))
+        $getBookingData = FlightBooking::where('booking_id', urlencode($bookingId))
                             ->where('status', AppConstants::BOOKING_STATUS_BOOKED)
                             ->first();
         if (!$getBookingData) throw new Exception('Error to find flight data!');
-
-        // dd($getBookingData->passengers);
 
         $post_data = [];
         $post_data['total_amount'] = $getBookingData->grand_total_price; # You cant not pay less than 10
@@ -268,27 +299,49 @@ class FlightService
         $post_data['tran_id'] = $getBookingData->booking_id; // tran_id must be unique
 
         # CUSTOMER INFORMATION
-        $post_data['cus_name'] = $getBookingData->passengers[0]['name']['firstName'].' '.$getBookingData->passengers[0]['name']['lastName'];
-        $post_data['cus_email'] = $getBookingData->passengers[0]['contact']['emailAddress'];
-        $post_data['cus_add1'] = $getBookingData->passengers[0]['documents'][0]['issuanceLocation'].', '.$getBookingData->passengers[0]['documents'][0]['issuanceCountry'];
-        $post_data['cus_city'] = $getBookingData->passengers[0]['documents'][0]['issuanceLocation'];
-        $post_data['cus_state'] = $getBookingData->passengers[0]['documents'][0]['issuanceLocation'];
-        $post_data['cus_country'] = "Bangladesh";
-        $post_data['cus_phone'] = $getBookingData->passengers[0]['contact']['phones'][0]['countryCallingCode'].$getBookingData->passengers[0]['contact']['phones'][0]['number'];
+        $post_data['cus_name'] = $getBookingData->customer_name;
+        $post_data['cus_email'] = $getBookingData->customer_email;
+        $post_data['cus_add1'] = $getBookingData->customer_address;
+        $post_data['cus_city'] = $getBookingData->customer_city;
+        $post_data['cus_state'] = $getBookingData->customer_state;
+        $post_data['cus_country'] = $getBookingData->customer_country;
+        $post_data['cus_phone'] = $getBookingData->customer_phone;
 
         $post_data['shipping_method'] = "NO";
         $post_data['product_name'] = "Flight Ticket: ".$getBookingData->pnr;
-        $post_data['product_category'] = "Air Ticket";
-        $post_data['product_profile'] = "general";
+        $post_data['product_category'] = $getBookingData->customer_product_category;
+        $post_data['product_profile'] = $getBookingData->customer_product_profile;
 
-        $post_data['success_url'] = "http://localhost:8000/success";
-        $post_data['fail_url'] = "http://localhost:8000/fail";
-        $post_data['cancel_url'] = "http://localhost:8000/cancel";
+
+        // To finding the flight related data
+        $departureDate = $getBookingData->itineraries;
+        $futureDate = Carbon::parse($departureDate[0]['segments'][0]['departure']['at']);
+        $now = Carbon::now();
+        $hours = $now->diffInHours($futureDate);
+
+        $fromFlight = $departureDate[0]['segments'][0]['departure']['iataCode'];
+        $toFlight = $departureDate[0]['segments'][(count($departureDate[0]['segments'])-1)]['arrival']['iataCode'];
+
+        $post_data['hours_till_departure'] = $hours." hrs";
+        $post_data['flight_type'] = (($getBookingData->trip_type === "MULTI_STOP")?"Multistop":(($getBookingData->trip_type === "ROUND_TRIP")?"Return":"Oneway"));
+        $post_data['pnr'] = $getBookingData->pnr;
+        $post_data['journey_from_to'] = $fromFlight."-".$toFlight;
+        $post_data['third_party_booking'] = "YES";
 
         $sslc = new SslCommerzNotification();
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
         $payment_options = $sslc->makePayment($post_data, 'checkout');
+        $payment_options = json_decode($payment_options, true);
 
-        return json_decode($payment_options, true);
+        if (!is_array($payment_options) && !isset($payment_options['status']) && $payment_options['status'] != 'success')
+        {
+            throw new Exception('Error to generate payment url!');
+        }
+
+        $getBookingData->payment_url = $payment_options['data'];
+        $getBookingData->payment_status = AppConstants::PAY_STATUS_PROCESSING;
+        $getBookingData->save();
+
+        return $payment_options;
     }
 }

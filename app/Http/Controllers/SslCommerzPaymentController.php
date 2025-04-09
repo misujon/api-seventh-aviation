@@ -142,16 +142,21 @@ class SslCommerzPaymentController extends Controller
 
         #Before  going to initiate the payment order status need to update as Pending.
         $update_product = DB::table('flight_bookings')
-        ->where('booking_id', $post_data['tran_id'])
+            ->where('booking_id', $post_data['tran_id'])
             ->updateOrInsert([
-                'name' => $post_data['cus_name'],
-                'email' => $post_data['cus_email'],
-                'phone' => $post_data['cus_phone'],
-                'amount' => $post_data['total_amount'],
-                'status' => 'Pending',
-                'address' => $post_data['cus_add1'],
-                'transaction_id' => $post_data['tran_id'],
-                'currency' => $post_data['currency']
+                'search_id' => $post_data['cus_name'],
+                'flight_id' => $post_data['cus_email'],
+                'flight_id_string' => $post_data['cus_phone'],
+                'total_price' => $post_data['total_amount'],
+                'base_price' => $post_data['total_amount'],
+                'grand_total_price' => $post_data['total_amount'],
+                // 'status' => 'Pending',
+                // 'address' => $post_data['cus_add1'],
+                'booking_id' => $post_data['tran_id'],
+                'price_currency' => $post_data['currency'],
+                'billing_currency' => $post_data['currency'],
+                'last_ticketing_date' => date('Y-m-d H:i:s'),
+                'source' => 'source'
             ]);
 
         $sslc = new SslCommerzNotification();
@@ -211,6 +216,7 @@ class SslCommerzPaymentController extends Controller
 
     public function fail(Request $request)
     {
+        dd($request->all());
         $tran_id = $request->input('tran_id');
 
         $order_details = DB::table('flight_bookings')
@@ -232,6 +238,7 @@ class SslCommerzPaymentController extends Controller
 
     public function cancel(Request $request)
     {
+        dd($request->all());
         $tran_id = $request->input('tran_id');
 
         $order_details = DB::table('flight_bookings')

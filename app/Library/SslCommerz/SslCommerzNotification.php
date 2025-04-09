@@ -224,7 +224,7 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setSuccessUrl()
     {
-        $this->successUrl = rtrim(env('APP_URL'), '/') . $this->config['success_url'];
+        $this->successUrl = rtrim(env('SSLCZ_SUCCESS_URL'), '/');
     }
 
     protected function getSuccessUrl()
@@ -234,7 +234,7 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setFailedUrl()
     {
-        $this->failedUrl = rtrim(env('APP_URL'), '/') . $this->config['failed_url'];
+        $this->failedUrl = rtrim(env('SSLCZ_FAILED_URL'), '/');
     }
 
     protected function getFailedUrl()
@@ -244,7 +244,7 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setCancelUrl()
     {
-        $this->cancelUrl = rtrim(env('APP_URL'), '/') . $this->config['cancel_url'];
+        $this->cancelUrl = rtrim(env('SSLCZ_CANCELLED_URL'), '/');
     }
 
     protected function getCancelUrl()
@@ -254,7 +254,7 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setIPNUrl()
     {
-        $this->ipnUrl = rtrim(env('APP_URL'), '/') . $this->config['ipn_url'];
+        $this->ipnUrl = rtrim(env('SSLCZ_IPN_URL'), '/');
     }
 
     protected function getIPNUrl()

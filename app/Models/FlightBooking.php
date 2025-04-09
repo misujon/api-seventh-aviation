@@ -14,6 +14,11 @@ class FlightBooking extends Model
         'search_id',
         'flight_id',
         'flight_id_string',
+        'trip_type',
+        'pax_adults',
+        'pax_childs',
+        'pax_kids',
+        'pax_infants',
         'customer_id',
         'customer_email',
         'customer_name',
@@ -71,5 +76,8 @@ class FlightBooking extends Model
         'passengers' => 'array',
         'booking_response' => 'array',
         'associated_records' => 'array',
+        'payment_full_response' => 'array',
+        'payment_response' => 'array',
+        'payment_failed_reason' => 'array',
     ];
 }
