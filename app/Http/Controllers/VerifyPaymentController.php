@@ -47,6 +47,7 @@ class VerifyPaymentController extends Controller
         }
         catch(Exception $e)
         {
+            dd($e);
             Log::error('Error in verify payment.', [$e]);
             return AppConstants::apiResponse(404, 'Error to verify payment! Please try again with valid data.');
         }
