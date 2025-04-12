@@ -19,11 +19,21 @@ use App\Http\Controllers\FlightController;
 
 Route::post('/user/login', [AuthController::class, 'index']);
 
+Route::prefix('flight')->group(function(){
+    Route::get('/apirports', [FlightController::class, 'searchAirports']);
+});
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('/me', [AuthController::class, 'me']);
+});
+
 Route::middleware('auth:sanctum')->prefix('flight')->group(function(){
     Route::post('/search', [FlightController::class, 'search']);
     Route::post('/pricing/{searchId}/flight/{id}', [FlightController::class, 'pricing']);
     Route::post('/booking/{searchId}/{flightId}', [FlightController::class, 'createOrder']);
     Route::post('/payment/{bookingId}', [FlightController::class, 'makePayment']);
+
+    Route::get('/mybookings', [FlightController::class, 'myBookings']);
 });
 
 Route::prefix('callback')->group(function(){

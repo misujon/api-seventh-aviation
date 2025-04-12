@@ -96,4 +96,33 @@ class FlightController extends Controller
             return AppConstants::apiResponse(404, 'Error to make payment! Please try again with valid data.');
         }
     }
+
+    public function searchAirports(Request $request)
+    {
+        try
+        {
+            $query = $request->input('q');
+            $result = $this->flightService->searchAirports($query);
+            return AppConstants::apiResponse(200, 'Airport search results!', $result);
+        }
+        catch(Exception $e)
+        {
+            Log::error('Error in airport search.', [$e]);
+            return AppConstants::apiResponse(404, 'Invalid search, please try again!');
+        }
+    }
+
+    public function myBookings(Request $request)
+    {
+        try
+        {
+            $result = $this->flightService->myBookings();
+            return AppConstants::apiResponse(200, 'Booking results!', $result);
+        }
+        catch(Exception $e)
+        {
+            Log::error('Error in my bookings.', [$e]);
+            return AppConstants::apiResponse(404, 'Invalid bookings, please try again!');
+        }
+    }
 }

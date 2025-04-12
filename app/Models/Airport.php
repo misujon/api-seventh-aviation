@@ -17,9 +17,11 @@ class Airport extends Model
         'countryName',
         'countryCode',
         'timezone',
+        'is_featured',
         'lat',
         'lon',
         'numAirports',
-        'city'
+        'city',
+        'status'
     ];
 }

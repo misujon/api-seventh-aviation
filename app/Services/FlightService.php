@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Constants\AppConstants;
+use App\Models\Airport;
 use App\Models\FlightBooking;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -11,6 +12,7 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Library\SslCommerz\SslCommerzNotification;
+use Illuminate\Support\Facades\Schema;
 
 class FlightService
 {
@@ -34,9 +36,7 @@ class FlightService
         int $adult = 1, 
         int $child = 0, 
         int $infant = 0,
-        string $tripType = 'oneway'
-    )
-    {
+        string $tripType = 'oneway') {
         $searchId = $this->generateSearchId();
         if (Cache::has('flight-search:'.$searchId))
         {
@@ -208,6 +208,7 @@ class FlightService
             'total_response' => ($jsonResponse)
         ];
 
+        if (Auth::check()) $bookingData['customer_id'] = Auth::user()->id;
         FlightBooking::updateOrCreate(
             ['search_id' => $searchId, 'flight_id_string' => $flightIdString],
             $bookingData
@@ -266,6 +267,7 @@ class FlightService
             $getPricingData->passengers = $jsonResponse['data']['travelers'];
             $getPricingData->booking_response = $jsonResponse;
             $getPricingData->status = AppConstants::BOOKING_STATUS_BOOKED;
+            if (Auth::check()) $getPricingData->customer_id = Auth::user()->id;
             $getPricingData->save();
 
             return [
@@ -338,10 +340,55 @@ class FlightService
             throw new Exception('Error to generate payment url!');
         }
 
+        if (Auth::check()) $getBookingData->customer_id = Auth::user()->id;
         $getBookingData->payment_url = $payment_options['data'];
         $getBookingData->payment_status = AppConstants::PAY_STATUS_PROCESSING;
         $getBookingData->save();
 
         return $payment_options;
+    }
+
+    public function searchAirports($query = null): array
+    {
+        $airports = Airport::where('status', AppConstants::STATUS_ACTIVE);
+
+        if (!empty($query) && !is_null($query))
+        {
+            $airports = $airports->where(function($q) use ($query) {
+                $q->where('name', 'LIKE', '%'.$query.'%')
+                    ->orWhere('code', 'LIKE', '%'.$query.'%')
+                    ->orWhere('cityName', 'LIKE', '%'.$query.'%')
+                    ->orWhere('countryName', 'LIKE', '%'.$query.'%');
+            });
+        }
+
+        $airports = $airports->orderBy('is_featured')
+            ->paginate(30);
+    
+        return $airports->toArray();
+    }
+    
+    public function myBookings(): array
+    {
+        $allColumns = Schema::getColumnListing('flight_bookings');
+        $excluded = [
+            'total_response', 
+            'payment_full_response', 
+            'flight_offers', 
+            'itineraries', 
+            'pricing', 
+            'traveler_pricing', 
+            'dictionaries',
+            'passengers'
+        ];
+        $columns = array_diff($allColumns, $excluded);
+
+        $bookings = FlightBooking::select($columns)
+            ->where('customer_email', Auth::user()->email)
+            ->orWhere('customer_id', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    
+        return $bookings->toArray();
     }
 }

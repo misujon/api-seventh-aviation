@@ -7,6 +7,7 @@ use App\Models\ApiCredential;
 use App\Constants\AppConstants;
 use Exception;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -96,14 +97,22 @@ class AuthService
     public function userLogin($request): array
     {
         $customer = User::where('email', $request->email)->first();
-        if (!Hash::check($request->password, $customer->password)) throw new Exception("Password is not correct!");
-        $token = $customer->createToken($request->email);
 
+        if (!Hash::check($request->password, $customer->password)) throw new Exception("Password is not correct!");
+        if ($customer->status !== AppConstants::STATUS_ACTIVE) throw new Exception("User not activated!");
+
+        $token = $customer->createToken($request->email);
         return [
-            'status' => 200,
-            'message' => 'Login successful',
             'token' => $token->plainTextToken,
             'customer' => $customer
         ];
+    }
+
+    public function me()
+    {
+        $customer = User::where('id', Auth::user()->id)->first();
+        if (!$customer) throw new Exception("User not found!");
+
+        return $customer;
     }
 }

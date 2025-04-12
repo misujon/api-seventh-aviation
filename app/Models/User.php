@@ -22,6 +22,19 @@ class User extends Authenticatable
         'email',
         'password',
         'token',
+        'title',
+        'last_name',
+        'dob',
+        'phone',
+        'address',
+        'city',
+        'country',
+        'country_code',
+        'passport_no',
+        'expiery_date',
+        'issue_date',
+        'issue_place',
+        'status'
     ];
 
     /**
