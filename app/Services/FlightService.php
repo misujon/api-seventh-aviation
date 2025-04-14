@@ -107,7 +107,7 @@ class FlightService
         $jsonResponse->put('paxChild', $child);
         $jsonResponse->put('paxInfant', $infant);
 
-        // Cache::put('flight-search:'.$searchId, $jsonResponse, now()->addMinutes(30));
+        Cache::put('flight-search:'.$searchId, $jsonResponse, now()->addMinutes(15));
 
         return $jsonResponse;
     }
