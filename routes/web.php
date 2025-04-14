@@ -19,6 +19,10 @@ Route::get('/login', function () {
     return view('auth.signin');
 })->name('login')->middleware('guest');
 
+Route::get('/forgot-password', function () {
+    return view('auth.forget');
+})->name('forget.password')->middleware('guest');
+
 Route::middleware('auth:admin')->group(function(){
     Route::any('/logout', function () {
         Auth::guard('admin')->logout();

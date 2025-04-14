@@ -72,7 +72,6 @@
     </div>
     
     <div class="card max-w-[370px] w-full">
-
         @if(session('status') || $errors->any())
             <div class="card-header flex items-stretch justify-center">
                 @if(session('status'))
@@ -92,66 +91,30 @@
                 @endif
             </div>
         @endif
-     <form action="{{ route('login') }}" class="card-body flex flex-col gap-5 p-10" id="sign_in_form" method="POST">
+     <form action="{{ route('password.email') }}" class="card-body flex flex-col gap-5 p-10" id="sign_in_form" method="POST">
         @csrf
       <div class="text-center mb-2.5">
        <h3 class="text-lg font-medium text-gray-900 leading-none mb-2.5">
-        Sign in
+        Forget Password
        </h3>
-      </div>
-      <div class="grid grid-cols-2 gap-2.5">
-       <a class="btn btn-light btn-sm justify-center" href="#">
-        <img alt="" class="size-3.5 shrink-0" src="assets/media/brand-logos/google.svg"/>
-        Use Google
-       </a>
-       <a class="btn btn-light btn-sm justify-center" href="#">
-        <img alt="" class="size-3.5 shrink-0 dark:hidden" src="assets/media/brand-logos/apple-black.svg"/>
-        <img alt="" class="size-3.5 shrink-0 light:hidden" src="assets/media/brand-logos/apple-white.svg"/>
-        Use Apple
-       </a>
-      </div>
-      <div class="flex items-center gap-2">
-       <span class="border-t border-gray-200 w-full">
-       </span>
-       <span class="text-2xs text-gray-500 font-medium uppercase">
-        Or
-       </span>
-       <span class="border-t border-gray-200 w-full">
-       </span>
+       <div class="flex items-center justify-center font-medium">
+        <span class="text-2sm text-gray-700 me-1.5">
+            Remember Password?
+        </span>
+        <a class="text-2sm link" href="{{ route('login') }}">
+            Sign in
+        </a>
+       </div>
       </div>
       <div class="flex flex-col gap-1">
        <label class="form-label font-normal text-gray-900">
         Email
        </label>
-       <input class="input" placeholder="email@email.com" type="email" name="email" value="{{ old('email', 'admin@admin.com') }}" required autofocus/>
+       <input class="input" placeholder="email@email.com" type="email" name="email" value="" required autofocus/>
       </div>
-      <div class="flex flex-col gap-1">
-       <div class="flex items-center justify-between gap-1">
-        <label class="form-label font-normal text-gray-900">
-         Password
-        </label>
-        <a class="text-2sm link shrink-0" href="{{ route('forget.password') }}">
-         Forgot Password?
-        </a>
-       </div>
-       <div class="input" data-toggle-password="true">
-        <input name="password" placeholder="Enter Password" type="password" value="123456" required/>
-        <button class="btn btn-icon" data-toggle-password-trigger="true" type="button">
-         <i class="ki-filled ki-eye text-gray-500 toggle-password-active:hidden">
-         </i>
-         <i class="ki-filled ki-eye-slash text-gray-500 hidden toggle-password-active:block">
-         </i>
-        </button>
-       </div>
-      </div>
-      <label class="checkbox-group">
-       <input class="checkbox checkbox-sm" name="remember" type="checkbox" value="1" checked/>
-       <span class="checkbox-label">
-        Remember me
-       </span>
-      </label>
+      
       <button class="btn btn-primary flex justify-center grow" type="submit">
-       Sign In
+            Send reset link
       </button>
      </form>
     </div>
