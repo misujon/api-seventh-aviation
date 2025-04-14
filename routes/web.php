@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SslCommerzPaymentController;
 
@@ -14,8 +15,17 @@ use App\Http\Controllers\SslCommerzPaymentController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', function () {
+    return view('auth.signin');
+})->name('login')->middleware('guest');
+
+Route::middleware('auth:admin')->group(function(){
+    Route::any('/logout', function () {
+        Auth::guard('admin')->logout();
+        return redirect()->route('login');
+    })->name('logout');
+
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
 });
 
 // SSLCOMMERZ Start
