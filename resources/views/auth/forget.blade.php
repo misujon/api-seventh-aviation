@@ -73,7 +73,7 @@
     
     <div class="card max-w-[370px] w-full">
         @if(session('status') || $errors->any())
-            <div class="card-header flex items-stretch justify-center">
+            <div class="card-header flex items-stretch justify-center text-sm">
                 @if(session('status'))
                     <div style="color: green;">
                         {{ session('status') }}

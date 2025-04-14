@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\ResetPasswordViewResponse;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginViewResponse;
 use Illuminate\Support\Facades\Auth;
@@ -23,15 +24,17 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(LoginViewResponse::class, function () {
-            return new class implements LoginViewResponse {
-                public function toResponse($request)
-                {
-                    // return view('auth.signin');
-                    return redirect()->intended('/');
-                }
-            };
-        });
+        $this->app->singleton(
+            LoginViewResponse::class, 
+            function () {
+                return new class implements LoginViewResponse {
+                    public function toResponse($request)
+                    {
+                        return redirect()->intended('/');
+                    }
+                };
+            }
+        );
     }
 
     /**
