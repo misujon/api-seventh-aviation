@@ -1,4 +1,4 @@
-<head>
+
     <title>{{ env('APP_NAME') }}</title>
     <meta charset="utf-8"/>
     <meta content="follow, index" name="robots"/>
@@ -30,5 +30,4 @@
     <link href="assets/vendors/keenicons/styles.bundle.css" rel="stylesheet"/>
     <link href="assets/css/styles.css" rel="stylesheet"/>
 
-    @yield('styles')
-</head>
+    

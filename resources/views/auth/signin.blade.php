@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html class="h-full dark" data-theme="true" data-theme-mode="dark" dir="ltr" lang="en">
+<head>
     @include('layouts.head')
+    <style>
+        .signin-dark {
+            position: relative;
+        }
+
+        @media (max-width: 1024px) {
+            .signin-dark {
+                position: unset;
+            }
+
+            .signin-dark-btn{
+                top: 17px;
+                right: 30px;
+            }
+        }
+
+    </style>
+</head>
  <body class="antialiased flex h-full text-base text-gray-700 dark:bg-coal-500">
   <!-- Theme Mode -->
   <script>
@@ -34,8 +53,8 @@
 		}
   </style>
   <div class="grid lg:grid-cols-2 grow">
-   <div class="flex justify-center items-center p-8 lg:p-10 order-2 lg:order-1 relative">
-    <div class="absolute top-0 end-0 pt-5">
+   <div class="flex justify-center items-center p-8 lg:p-10 order-2 lg:order-1 signin-dark">
+    <div class="absolute top-0 end-0 pt-5 signin-dark-btn">
         <div class="menu-item mb-0.5">
          <div class="menu-link">
           <span class="menu-icon me-1">

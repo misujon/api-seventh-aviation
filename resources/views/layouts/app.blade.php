@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html class="h-full dark" data-theme="true" dir="ltr" lang="en" data-theme-mode="dark">
+<head>
     @include('layouts.head')
+    @yield('styles')
+</head>
     <body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:var(--tw-coal-300)] [--tw-content-bg:var(--tw-light)] [--tw-content-bg-dark:var(--tw-coal-500)] [--tw-content-scrollbar-color:#e8e8e8] [--tw-header-height:60px] [--tw-sidebar-width:270px] bg-[--tw-page-bg] lg:overflow-hidden">
         <!-- Theme Mode -->
         <script>
