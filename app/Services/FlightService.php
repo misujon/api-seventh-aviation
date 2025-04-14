@@ -69,27 +69,28 @@ class FlightService
         $jsonResponse = collect($jsonResponse)->filter(function ($value, $key) {
             return $key !== "meta";
         })->map(function ($value, $valkey) use (&$jsonResponse) {
-            if ($valkey === "data") {
-                $value = collect($value)->map(function ($item, $itemkey) {
-                    // Only process if 'itineraries' key exists
-                    if (isset($item['itineraries']) && is_array($item['itineraries'])) {
-                        $item['itineraries'] = collect($item['itineraries'])->map(function ($itinerary) {
-                            if (isset($itinerary['segments']) && is_array($itinerary['segments'])) {
-                                $itinerary['segments'] = collect($itinerary['segments'])->map(function ($segment) {
-                                    $segment['carrierData'] = $this->getAirlineByCode($segment['carrierCode']);
-                                    return $segment;
-                                })->toArray();
-                            }
-                            return $itinerary;
-                        })->toArray();
-                    }
+            // if ($valkey === "data") {
+            //     $value = collect($value)->map(function ($item, $itemkey) {
+            //         // Only process if 'itineraries' key exists
+            //         if (isset($item['itineraries']) && is_array($item['itineraries'])) {
+            //             $item['itineraries'] = collect($item['itineraries'])->map(function ($itinerary) {
+            //                 if (isset($itinerary['segments']) && is_array($itinerary['segments'])) {
+            //                     $itinerary['segments'] = collect($itinerary['segments'])->map(function ($segment) {
+            //                         $segment['carrierData'] = $this->getAirlineByCode($segment['carrierCode']);
+            //                         return $segment;
+            //                     })->toArray();
+            //                 }
+            //                 return $itinerary;
+            //             })->toArray();
+            //         }
         
-                    return $item;
-                })->toArray();
+            //         return $item;
+            //     })->toArray();
         
-                $jsonResponse[$valkey] = $value;
-            }
-            else if ($valkey === "dictionaries")
+            //     $jsonResponse[$valkey] = $value;
+            // }
+
+            if ($valkey === "dictionaries")
             {
                 if (isset($value['carriers']) && is_array($value['carriers'])) {
                     $value['carriers'] = collect($value['carriers'])->map(function ($val, $key) {
