@@ -23,6 +23,10 @@ Route::get('/forgot-password', function () {
     return view('auth.forget');
 })->name('forget.password')->middleware('guest');
 
+Route::get('/reset-password', function () {
+    return view('auth.reset', ['request' => request()]);
+})->name('forget.password')->middleware('guest');
+
 Route::middleware('auth:admin')->group(function(){
     Route::any('/logout', function () {
         Auth::guard('admin')->logout();
