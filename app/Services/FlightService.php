@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Constants\AppConstants;
+use App\Models\Airline;
 use App\Models\Airport;
 use App\Models\FlightBooking;
 use Carbon\Carbon;
@@ -65,18 +66,57 @@ class FlightService
         $request = new Request('GET', $auth->base_url.'/v2/shopping/flight-offers?'.http_build_query($query), $headers);
         $res = $client->sendAsync($request)->wait();
         $jsonResponse = json_decode($res->getBody()->getContents(), true);
-        $jsonResponse = collect($jsonResponse)->filter(function($value, $key){
+        $jsonResponse = collect($jsonResponse)->filter(function ($value, $key) {
             return $key !== "meta";
+        })->map(function ($value, $valkey) use (&$jsonResponse) {
+            if ($valkey === "data") {
+                $value = collect($value)->map(function ($item, $itemkey) {
+                    // Only process if 'itineraries' key exists
+                    if (isset($item['itineraries']) && is_array($item['itineraries'])) {
+                        $item['itineraries'] = collect($item['itineraries'])->map(function ($itinerary) {
+                            if (isset($itinerary['segments']) && is_array($itinerary['segments'])) {
+                                $itinerary['segments'] = collect($itinerary['segments'])->map(function ($segment) {
+                                    $segment['carrierData'] = $this->getAirlineByCode($segment['carrierCode']);
+                                    return $segment;
+                                })->toArray();
+                            }
+                            return $itinerary;
+                        })->toArray();
+                    }
+        
+                    return $item;
+                })->toArray();
+        
+                $jsonResponse[$valkey] = $value;
+            }
+            else if ($valkey === "dictionaries")
+            {
+                if (isset($value['carriers']) && is_array($value['carriers'])) {
+                    $value['carriers'] = collect($value['carriers'])->map(function ($val, $key) {
+                        return $this->getAirlineByCode($key);
+                    })->toArray();
+                }
+            }
+        
+            return $value;
         });
+        
         $jsonResponse->put('searchId', $searchId);
         $jsonResponse->put('searchType', $tripType);
         $jsonResponse->put('paxAdult', $adult);
         $jsonResponse->put('paxChild', $child);
         $jsonResponse->put('paxInfant', $infant);
 
-        Cache::put('flight-search:'.$searchId, $jsonResponse);
+        // Cache::put('flight-search:'.$searchId, $jsonResponse, now()->addMinutes(30));
 
         return $jsonResponse;
+    }
+
+    private function getAirlineByCode(string $code)
+    {
+        $airline = Airline::where('iata_code', $code)->first();
+        if (!$airline) return null;
+        return $airline->toArray();
     }
 
     public function generateSearchId()
