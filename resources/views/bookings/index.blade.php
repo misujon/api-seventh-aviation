@@ -1,7 +1,23 @@
 @extends('layouts.app')
 
 @section('styles')
+    <style>
+        .details-table tbody tr th, .details-table tbody tr td{
+            padding: 5px;
+        }
+        .details-itinerary{
+            font-size: 12px;
+            padding: 5px 0;
+            border-bottom: 1px solid #20222e;
+        }
+        .details-itinerary:last-child{
+            border-bottom: none;
+        }
 
+        .details-table-row:hover, .details-table-row:hover td, .details-table-row:hover td .card{
+            background: #1f212a
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -16,20 +32,20 @@
         <div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
          <div class="flex flex-col justify-center gap-2">
           <h1 class="text-xl font-medium leading-none text-gray-900">
-           Flight Reservations This week
+           Flight Reservations at {{ date('M Y') }}
           </h1>
           <div class="flex items-center flex-wrap gap-1.5 font-medium">
            <span class="text-md text-gray-600">
-            All Members:
+            Total Orders:
            </span>
            <span class="text-md text-gray-800 font-semibold me-2">
-            49,053
+            {{ number_format($summary->total_bookings) }}
            </span>
            <span class="text-md text-gray-600">
-            Pro Licenses
+            Total Grand Total
            </span>
            <span class="text-md text-gray-800 font-semibold">
-            1724
+            {{ number_format($summary->total_revenue) }}
            </span>
           </div>
          </div>
@@ -40,162 +56,350 @@
     <div class="container-fluid">
         <div class="grid gap-5 lg:gap-7.5">
             <div class="card card-grid min-w-full">
-                <div class="card-header flex-wrap gap-2">
-                 <h3 class="card-title font-medium text-sm">
-                  Showing 10 of 49,053 users
-                 </h3>
-                 <div class="flex flex-wrap gap-2 lg:gap-5">
-                  <div class="flex">
-                   <label class="input input-sm">
-                    <i class="ki-filled ki-magnifier">
-                    </i>
-                    <input placeholder="Search users" type="text" value="">
-                    
-                   </label>
-                  </div>
-                  <div class="flex flex-wrap gap-2.5">
-                   <select class="select select-sm w-28">
-                    <option value="1">
-                     Active
-                    </option>
-                    <option value="2">
-                     Disabled
-                    </option>
-                    <option value="2">
-                     Pending
-                    </option>
-                   </select>
-                   <select class="select select-sm w-28">
-                    <option value="1">
-                     Latest
-                    </option>
-                    <option value="2">
-                     Older
-                    </option>
-                    <option value="3">
-                     Oldest
-                    </option>
-                   </select>
-                   <button class="btn btn-sm btn-outline btn-primary">
-                    <i class="ki-filled ki-setting-4">
-                    </i>
-                    Filters
-                   </button>
-                  </div>
-                 </div>
-                </div>
+                <form method="GET" action="{{ route('bookings.index') }}" class="">
+                    <div class="card-header flex-wrap gap-2">
+                        <div class="flex items-center gap-2 order-2 md:order-1 card-header flex-wrap gap-2">
+                            Show 
+                            <select class="select select-sm w-16 me-3" data-datatable-size="true" name="length">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+
+                            <div class="flex items-center gap-4 order-1 md:order-2">
+                                <span data-datatable-info="true">Page {{ $bookings->currentPage() }} of {{ $bookings->lastPage() }}</span>
+                                <div class="pagination" data-datatable-pagination="true">
+                                    @if ($bookings->hasPages())
+                                    <div class="pagination">
+                                        @if ($bookings->onFirstPage())
+                                            <button class="btn disabled" disabled=""><i class="ki-outline ki-black-left rtl:transform rtl:rotate-180"></i></button>
+                                        @else
+                                            <a href="{{ $bookings->previousPageUrl() }}" class="btn">
+                                                <i class="ki-outline ki-black-left rtl:transform rtl:rotate-180"></i>
+                                            </a>
+                                        @endif
+
+                                        {{-- @dd($bookings->appends(request()->query())->links()->elements); --}}
+
+                                        @foreach ($bookings->appends(request()->query())->links()->elements as $element)
+                                            @if (is_string($element))
+                                                <button class="btn">...</button>
+                                            @endif
+
+                                            @if (is_array($element))
+                                                @foreach ($element as $page => $url)
+                                                    @if ($page == $bookings->currentPage())
+                                                        <button class="btn active disabled" disabled="">{{ $page }}</button>
+                                                    @else
+                                                        <a href="{{ $url }}" class="btn">{{ $page }}</a>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+
+                                        @endforeach
+
+                                        @if ($bookings->hasMorePages())
+                                            <a href="{{ $bookings->nextPageUrl() }}" class="btn">
+                                                <i class="ki-outline ki-black-right rtl:transform rtl:rotate-180"></i>
+                                            </a>
+                                        @else
+                                            <button class="btn disabled" disabled="">
+                                                <i class="ki-outline ki-black-right rtl:transform rtl:rotate-180"></i>
+                                            </button>
+                                        @endif
+                                        {{-- <button class="btn"><i class="ki-outline ki-black-right rtl:transform rtl:rotate-180"></i></button> --}}
+                                        {{-- {{ $bookings->appends(request()->query())->links() }} --}}
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 lg:gap-5">
+                            <div class="flex">
+                                <label class="input input-sm">
+                                    <i class="ki-filled ki-magnifier"></i>
+                                    <input placeholder="Search booking" type="text" value="{{ request('search') }}" name="search">
+                                </label>
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <select class="select select-sm w-28" name="status">
+                                    <option value="">Booking Status</option>
+                                    <option value="PENDING" {{ request('status') == 'PENDING' ? 'selected' : '' }}>Pending</option>
+                                    <option value="BOOKED" {{ request('status') == 'BOOKED' ? 'selected' : '' }}>Booked</option>
+                                    <option value="CANCELLED" {{ request('status') == 'CANCELLED' ? 'selected' : '' }}>Cancelled</option>
+                                    <option value="TICKETED" {{ request('status') == 'TICKETED' ? 'selected' : '' }}>Ticketed</option>
+                                </select>
+                                <select class="select select-sm w-28" name="payment_status">
+                                    <option value="">Payment Status</option>
+                                    <option value="PENDING" {{ request('payment_status') == 'PENDING' ? 'selected' : '' }}>Pending</option>
+                                    <option value="PROCESSING" {{ request('payment_status') == 'PROCESSING' ? 'selected' : '' }}>Processing</option>
+                                    <option value="SUCCESS" {{ request('payment_status') == 'SUCCESS' ? 'selected' : '' }}>Success</option>
+                                    <option value="FAILED" {{ request('payment_status') == 'FAILED' ? 'selected' : '' }}>Failed</option>
+                                    <option value="COMPLETE" {{ request('payment_status') == 'COMPLETE' ? 'selected' : '' }}>Complete</option>
+                                </select>
+                                <button class="btn btn-sm btn-outline btn-primary">
+                                    <i class="ki-filled ki-setting-4"></i> Filters
+                                </button>
+
+                                @if (request()->query('payment_status') || request()->query('status') || request()->query('search'))
+                                    <a class="text-danger font-bold text-xs pt-2" href="{{ route('bookings.index') }}">
+                                        <i class="ki-filled ki-cross"></i> Reset Filter
+                                    </a>
+                                @endif
+                            </div>
+                            
+                        </div>
+                    </div>
+                </form>
                 <div class="card-body">
                  <div data-datatable="true" data-datatable-page-size="10" class="datatable-initialized">
-                  <div class="scrollable-x-auto">
-                   <table class="table table-auto table-border" data-datatable-table="true">
-                    <thead>
-                     <tr>
-                        <th class="min-w-[300px]">
-                            <span class="sort asc">
-                                <span class="sort-label font-normal text-gray-700">
-                                    Booking Information
-                                </span>
-                                <span class="sort-icon"></span>
-                            </span>
-                        </th>
-                        <th class="min-w-[300px]">
-                            <span class="sort">
-                                <span class="sort-label font-normal text-gray-700">
-                                    Trip Information
-                                </span>
-                                <span class="sort-icon"></span>
-                            </span>
-                        </th>
-                        <th class="min-w-[300px]">
-                            <span class="sort">
-                                <span class="sort-label font-normal text-gray-700">
-                                    Customer Information
-                                </span>
-                                <span class="sort-icon"></span>
-                            </span>
-                        </th>
-                        <th class="min-w-[300px]">
-                            <span class="sort">
-                                <span class="sort-label font-normal text-gray-700">
-                                    Payment Information
-                                </span>
-                                <span class="sort-icon"></span>
-                            </span>
-                        </th>
-                        <th class="min-w-[175px]">
-                            <span class="sort-label font-normal text-gray-700">
-                                Actions
-                            </span>
-                        </th>
-                     </tr>
-                    </thead>
-                    
-                            
-                        <tbody>
+                    <div class="scrollable-x-auto">
+                        <table class="table table-auto table-border" data-datatable-table="true">
+                            <thead>
                             <tr>
-                                <td>
-
-                                    <div class="card grow">
-                                        <div class="card-body pt-4 pb-3">
-                                         <table class="table-auto">
-                                          <tbody>
-                                           <tr>
-                                            <td class="text-sm text-gray-600 min-w-36">
-                                                Booking Id
-                                            </td>
-                                            <td class="flex items-center gap-2.5 text-sm text-gray-800">
-                                                Cloud One Enterprise
-                                            </td>
-                                           </tr>
-                                           <tr>
-                                            <td class="text-sm text-gray-600 min-w-36">
-                                                PNR
-                                            </td>
-                                            <td class="flex items-center gap-2.5 text-sm text-gray-800">
-                                                6 Aug, 2024
-                                            </td>
-                                           </tr>
-                                           <tr>
-                                            <td class="text-sm text-gray-600 min-w-36">
-                                                Time
-                                            </td>
-                                            <td class="flex items-center gap-2.5 text-sm text-gray-800">
-                                                6 Aug, 2024
-                                            </td>
-                                           </tr>
-                                           <tr>
-                                            <td class="text-sm text-gray-600 min-w-36">
-                                                Trip Type
-                                            </td>
-                                            <td class="flex items-center gap-2.5 text-sm text-gray-800">
-                                                One Way
-                                            </td>
-                                           </tr>
-                                          </tbody>
-                                         </table>
-                                        </div>
-                                       </div>
-
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th class="min-w-[300px]">
+                                    <span class="sort asc">
+                                        <span class="sort-label font-normal text-gray-700">
+                                            Booking Information
+                                        </span>
+                                        <span class="sort-icon"></span>
+                                    </span>
+                                </th>
+                                <th class="min-w-[300px]">
+                                    <span class="sort">
+                                        <span class="sort-label font-normal text-gray-700">
+                                            Payment Information
+                                        </span>
+                                        <span class="sort-icon"></span>
+                                    </span>
+                                </th>
+                                <th class="min-w-[300px]">
+                                    <span class="sort">
+                                        <span class="sort-label font-normal text-gray-700">
+                                            Trip Information
+                                        </span>
+                                        <span class="sort-icon"></span>
+                                    </span>
+                                </th>
+                                <th class="min-w-[300px]">
+                                    <span class="sort">
+                                        <span class="sort-label font-normal text-gray-700">
+                                            Customer Information
+                                        </span>
+                                        <span class="sort-icon"></span>
+                                    </span>
+                                </th>
                             </tr>
-                        </tbody>
-                </table>
-                  </div>
-                  <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
-                   <div class="flex items-center gap-2 order-2 md:order-1">
-                    Show
-                    <select class="select select-sm w-16" data-datatable-size="true" name="perpage"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="50">50</option></select>
-                    per page
-                   </div>
-                   <div class="flex items-center gap-4 order-1 md:order-2">
-                    <span data-datatable-info="true">1-5 of 31</span>
-                    <div class="pagination" data-datatable-pagination="true"><div class="pagination"><button class="btn disabled" disabled=""><i class="ki-outline ki-black-left rtl:transform rtl:rotate-180"></i></button><button class="btn active disabled" disabled="">1</button><button class="btn">2</button><button class="btn">3</button><button class="btn">...</button><button class="btn"><i class="ki-outline ki-black-right rtl:transform rtl:rotate-180"></i></button></div></div>
-                   </div>
-                  </div>
+                            </thead>
+                            
+                                    
+                                <tbody>
+                                    @forelse ($bookings as $bk)
+                                    <tr class="cursor-pointer transition-colors duration-200 details-table-row" onclick="window.location='{{ route('bookings.show', $bk->id) }}';">
+                                        <td>
+                                            <div class="card grow">
+                                                <div class="card-body pt-4 pb-3">
+                                                    <table class="table details-table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Booking Id
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->booking_id }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    PNR
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->pnr }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Time
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ date('M d, Y H:iA', strtotime($bk->created_at)) }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Trip Type
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->trip_type }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Status
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    @if ($bk->status == 'PENDING')
+                                                                        <span class="badge badge-xs badge-warning badge-outline shrink-0">Pending</span>
+                                                                    @elseif ($bk->status == 'BOOKED')
+                                                                        <span class="badge badge-xs badge-success badge-outline shrink-0">Booked</span>
+                                                                    @elseif ($bk->status == 'CANCELLED')
+                                                                        <span class="badge badge-xs badge-danger badge-outline shrink-0">Cancelled</span>
+                                                                    @elseif ($bk->status == 'TICKETED')
+                                                                        <span class="badge badge-xs badge-info badge-outline shrink-0">Ticketed</span>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Pax Info
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    <p>
+                                                                        Adults: <span class="badge badge-xs badge-default badge-outline shrink-0">{{ (!empty($bk->pax_adults))?$bk->pax_adults:0 }}</span> &nbsp;
+                                                                        Childs: <span class="badge badge-xs badge-default badge-outline shrink-0">{{ (!empty($bk->pax_childs))?$bk->pax_childs:0 }}</span> &nbsp;
+                                                                        Kids: <span class="badge badge-xs badge-default badge-outline shrink-0">{{ (!empty($bk->pax_kids))?$bk->pax_kids:0 }}</span> &nbsp;
+                                                                        Infants: <span class="badge badge-xs badge-default badge-outline shrink-0">{{ (!empty($bk->pax_infants))?$bk->pax_infants:0 }}</span>
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="card grow">
+                                                <div class="card-body pt-4 pb-3">
+                                                    <table class="table details-table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Base Price
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->billing_currency }} {{ $bk->base_price }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Total
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->billing_currency }} {{ $bk->total_price }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Grand Total
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->billing_currency }} {{ $bk->grand_total_price }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Pay Status
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    @if ($bk->payment_status == 'PENDING')
+                                                                        <span class="badge badge-xs badge-warning badge-outline shrink-0">Pending</span>
+                                                                    @elseif ($bk->payment_status == 'PROCESSING')
+                                                                        <span class="badge badge-xs badge-info badge-outline shrink-0">Processing</span>
+                                                                    @elseif ($bk->payment_status == 'SUCCESS')
+                                                                        <span class="badge badge-xs badge-info badge-outline shrink-0">Success</span>
+                                                                    @elseif ($bk->payment_status == 'FAILED')
+                                                                        <span class="badge badge-xs badge-danger badge-outline shrink-0">Failed</span>
+                                                                    @elseif ($bk->payment_status == 'COMPLETE')
+                                                                        <span class="badge badge-xs badge-success badge-outline shrink-0">Complete</span>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Payment ID
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{  $bk->payment_id }}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @php
+                                                $itinery = \App\Constants\AppConstants::getDestinationAndTime($bk->itineraries);
+                                                foreach ($itinery as $key => $itns)
+                                                {
+                                                    echo $itns;
+                                                }
+                                            @endphp
+                                        </td>
+                                        <td>
+                                            <div class="card grow">
+                                                <div class="card-body pt-4 pb-3">
+                                                    <table class="table details-table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-800 min-w-30" colspan="2">
+                                                                    {{ $bk->customer_email }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Name
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->customer_name }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Phone
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->customer_phone }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    Passport
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    @if (!empty($bk->passengers) && isset($bk->passengers[0]) && isset($bk->passengers[0]['documents'][0]))
+                                                                        {{ $bk->passengers[0]['documents'][0]['number'] }}
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-600 min-w-30">
+                                                                    City, Country
+                                                                </td>
+                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                    {{ $bk->customer_city }} {{ $bk->customer_country }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-xs text-gray-800 min-w-30" colspan="2">
+                                                                    Address: {{ $bk->customer_address }}, {{ $bk->customer_postcode }}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                        </table>
+                    </div>
+                  {{-- <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
+                   
+                   
+                  </div> --}}
                  </div>
                 </div>
                </div>

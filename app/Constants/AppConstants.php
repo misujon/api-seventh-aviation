@@ -2,6 +2,8 @@
 
 namespace App\Constants;
 
+use App\Models\Airline;
+
 class AppConstants 
 {
     public const AMADEUS_API = 'amadeus';
@@ -26,5 +28,29 @@ class AppConstants
             'message' => $message,
             'data' => $data
         ];
+    }
+
+    public static function getDestinationAndTime(array $segment): array
+    {
+        $data = [];
+        foreach ($segment[0]['segments'] as $key => $val)
+        {
+            $airports = "<div class='details-itinerary'>";
+            $airports .= "<p><strong>Destination:</strong> <span class='badge badge-xs badge-warning badge-outline shrink-0'>".$val['departure']['iataCode'] . "</span> - <span class='badge badge-xs badge-primary badge-outline shrink-0'>" . $val['arrival']['iataCode'] . "</span></p>";
+            $airports .= "<strong>Departure At:</strong> ".date('d/m/Y H:iA', strtotime($val['departure']['at'])) . "<br/>";
+            $airports .= "<strong>Arrival At:</strong>".date('d/m/Y H:iA', strtotime($val['arrival']['at'])) . "<br/>";
+            $airports .= "<strong>Carrier:</strong> ".self::getAirlineByCode($val['carrierCode'])['name'];
+            $airports .= "</div>";
+            $data[] = $airports;
+        }
+
+        return $data;
+    }
+
+    public static function getAirlineByCode(string $code)
+    {
+        $airline = Airline::where('iata_code', $code)->first();
+        if (!$airline) return null;
+        return $airline->toArray();
     }
 }

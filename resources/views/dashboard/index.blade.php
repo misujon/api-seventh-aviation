@@ -31,7 +31,7 @@
           <img alt="" class="w-7 mt-4 ms-5" src="{{ asset('assets/media/dashboard/pending.png') }}"/>
           <div class="flex flex-col gap-1 pb-4 px-5">
            <span class="text-3xl font-semibold text-gray-900">
-                100
+                {{ $statusSummary['PENDING']->count ?? 0 }}
            </span>
            <span class="text-2sm font-normal text-gray-700">
                 Booking Pending
@@ -42,10 +42,10 @@
           <img alt="" class="w-7 mt-4 ms-5" src="{{ asset('assets/media/dashboard/check.png') }}"/>
           <div class="flex flex-col gap-1 pb-4 px-5">
            <span class="text-3xl font-semibold text-gray-900">
-                50
+                {{ $statusSummary['BOOKED']->count ?? 0 }}
            </span>
            <span class="text-2sm font-normal text-gray-700">
-                Booking Processing
+                Booking Created
            </span>
           </div>
          </div>
@@ -53,10 +53,10 @@
           <img alt="" class="w-7 mt-4 ms-5" src="{{ asset('assets/media/dashboard/travel.png') }}"/>
           <div class="flex flex-col gap-1 pb-4 px-5">
            <span class="text-3xl font-semibold text-gray-900">
-                608
+               {{ $statusSummary['TICKETED']->count ?? 0 }}
            </span>
            <span class="text-2sm font-normal text-gray-700">
-                Ticketd
+               Ticketing Done
            </span>
           </div>
          </div>
@@ -65,7 +65,7 @@
           {{-- <img alt="" class="light:hidden w-7 mt-4 ms-5" src="assets/media/brand-logos/tiktok-dark.svg"/> --}}
           <div class="flex flex-col gap-1 pb-4 px-5">
            <span class="text-3xl font-semibold text-gray-900">
-                20
+               {{ $statusSummary['CANCELLED']->count ?? 0 }}
            </span>
            <span class="text-2sm font-normal text-gray-700">
                 Cancelled

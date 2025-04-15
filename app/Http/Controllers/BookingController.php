@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\AppConstants;
 use App\Models\FlightBooking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -14,7 +16,7 @@ class BookingController extends Controller
         $search        = $request->input('search');
         $bookingStatus = $request->input('status'); // e.g. pending, confirmed, cancelled
         $paymentStatus = $request->input('payment_status'); // e.g. paid, unpaid
-        $pageLength    = $request->input('length', 5); // default page length
+        $pageLength    = $request->input('length', 10); // default page length
         
         // Build query
         $query = FlightBooking::query();
@@ -40,12 +42,13 @@ class BookingController extends Controller
 
         // Paginate the results
         $bookings = $query->latest()->paginate($pageLength);
-
-        // Optionally preserve filters in pagination links
         $bookings->appends($request->all());
-        // dd($bookings);
 
-        // Or return to a Blade view
-        return view('bookings.index', compact('bookings'));
+        $summary = FlightBooking::whereMonth('created_at', Carbon::now()->month)
+                    ->whereYear('created_at', Carbon::now()->year)
+                    ->selectRaw('COUNT(id) as total_bookings, SUM(grand_total_price) as total_revenue')
+                    ->first();
+
+        return view('bookings.index', compact('bookings', 'summary'));
     }
 }
