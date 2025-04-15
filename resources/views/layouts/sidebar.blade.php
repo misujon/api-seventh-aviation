@@ -3,88 +3,32 @@
     <!-- Sidebar Header -->
     <div class="flex flex-col gap-2.5" id="sidebar_header">
         <div class="flex items-center gap-2.5 px-3.5 h-[70px]">
-            <a href="html/demo10/index.html">
-            <img class="size-[34px]" src="assets/media/app/mini-logo-circle-success.svg"/>
+            <a href="{{ route('home') }}">
+                <img class="size-[34px]" src="assets/media/app/mini-logo-circle-success.svg"/>
             </a>
             <div class="menu menu-default grow" data-menu="true">
             <div class="menu-item grow" data-menu-item-offset="0, 15px" data-menu-item-placement="bottom-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="hover">
-            <div class="menu-label cursor-pointer text-gray-900 font-medium grow justify-between">
-            <span class="text-lg font-medium text-inverse grow">
-                Metronic
-            </span>
-            <div class="flex flex-col text-gray-900 font-medium">
-                <span class="menu-arrow">
-                <i class="ki-filled ki-up">
-                </i>
-                </span>
-                <span class="menu-arrow">
-                <i class="ki-filled ki-down">
-                </i>
-                </span>
-            </div>
-            </div>
-            <div class="menu-dropdown w-48 py-2">
-            <div class="menu-item">
-                <a class="menu-link" href="html/demo10/public-profile/profiles/default.html" tabindex="0">
-                <span class="menu-icon">
-                <i class="ki-filled ki-profile-circle">
-                </i>
-                </span>
-                <span class="menu-title">
-                Public Profile
-                </span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a class="menu-link" href="html/demo10.html" tabindex="0">
-                <span class="menu-icon">
-                <i class="ki-filled ki-setting-2">
-                </i>
-                </span>
-                <span class="menu-title">
-                Account
-                </span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a class="menu-link" href="html/demo10/network/get-started.html" tabindex="0">
-                <span class="menu-icon">
-                <i class="ki-filled ki-users">
-                </i>
-                </span>
-                <span class="menu-title">
-                Network
-                </span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a class="menu-link" href="html/demo10/authentication/get-started.html" tabindex="0">
-                <span class="menu-icon">
-                <i class="ki-filled ki-security-user">
-                </i>
-                </span>
-                <span class="menu-title">
-                Authentication
-                </span>
-                </a>
-            </div>
-            </div>
+                <div class="menu-label cursor-pointer text-gray-900 font-medium grow justify-between">
+                    <span class="text-lg font-medium text-inverse grow">
+                        Flight Falcon
+                    </span>
+                </div>
             </div>
             </div>
         </div>
-        <div class="flex items-center gap-2.5 px-3.5">
+        {{-- <div class="flex items-center gap-2.5 px-3.5">
             <!-- Input -->
             <a class="btn btn-dark btn-sm justify-center min-w-[198px]" href="html/demo10/public-profile/projects/3-columns.html">
-            <i class="ki-filled ki-plus">
-            </i>
-            Add New
+                <i class="ki-filled ki-plus">
+                </i>
+                Add New
             </a>
             <!-- End of Input -->
             <button class="btn btn-icon btn-dark btn-icon-lg size-8 hover:text-primary" data-modal-toggle="#search_modal">
-            <i class="ki-filled ki-magnifier">
-            </i>
+                <i class="ki-filled ki-magnifier">
+                </i>
             </button>
-        </div>
+        </div> --}}
     </div>
     <!-- End of Sidebar Header -->
     <!-- Sidebar menu -->
@@ -92,975 +36,139 @@
         <div class="scrollable-y-auto grow [--tw-scrollbar-thumb-color:var(--tw-gray-300)]" data-scrollable="true" data-scrollable-dependencies="#sidebar_header, #sidebar_footer" data-scrollable-height="auto" data-scrollable-offset="0px" data-scrollable-wrappers="#sidebar_menu">
             <!-- Primary Menu -->
             <div class="mb-5">
-            <h3 class="text-sm text-gray-500 uppercase ps-5 inline-block mb-3">
-            Pages
-            </h3>
-            <div class="menu flex flex-col w-full gap-1.5 px-3.5" data-menu="true" data-menu-accordion-expand-all="false" id="sidebar_primary_menu">
-            <div class="menu-item">
-            <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="html/demo10.html">
-                <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
-                <i class="ki-filled ki-home-3">
-                </i>
-                </span>
-                <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
-                Overview
-                </span>
-            </a>
+                <h3 class="text-sm text-gray-500 uppercase ps-5 inline-block mb-3">
+                Pages
+                </h3>
+                <div class="menu flex flex-col w-full gap-1.5 px-3.5" data-menu="true" data-menu-accordion-expand-all="false" id="sidebar_primary_menu">
+                    <div class="menu-item {{ request()->is('/')?'active':'' }}">
+                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('home') }}">
+                            <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                                <i class="ki-filled ki-element-11 text-lg">
+                                </i>
+                            </span>
+                            <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                                Dashboard
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item {{ request()->is('bookings')?'active':'' }}">
+                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('bookings.index') }}">
+                            <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
+                                <i class="ki-filled ki-wallet"></i>
+                            </span>
+                            <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                                Flight Bookings
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('home') }}">
+                            <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
+                                <i class="ki-filled ki-tag-cross"></i>
+                            </span>
+                            <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                                Booking Refunds
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('home') }}">
+                            <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
+                                <i class="ki-filled ki-people"></i>
+                            </span>
+                            <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                                Customers
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('home') }}">
+                            <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
+                                <i class="ki-filled ki-graph-up"></i>
+                            </span>
+                            <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                                Reports
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
             </div>
-            <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-            <div class="menu-link gap-2.5 py-2 px-2.5 rounded-md !menu-item-hover:bg-transparent !menu-item-here:bg-transparent">
-                <span class="menu-icon items-start text-gray-400 text-lg menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                <i class="ki-filled ki-profile-circle">
-                </i>
-                </span>
-                <span class="menu-title font-medium text-sm text-gray-700 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Public Profile
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-            </div>
-            <div class="menu-accordion gap-px ps-7">
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Profiles
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/default.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Default
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/creator.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Creator
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/company.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Company
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/nft.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    NFT
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/blogger.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Blogger
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/crm.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    CRM
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item flex-col-reverse" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                    <span class="menu-title text-2sm text-gray-600 menu-link-hover:text-gray-900">
-                    <span class="hidden menu-item-show:!flex">
-                    Show less
-                    </span>
-                    <span class="flex menu-item-show:hidden">
-                    Show 4 more
-                    </span>
-                    </span>
-                    <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                    <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                    </i>
-                    <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                    </i>
-                    </span>
-                </div>
-                <div class="menu-accordion gap-px">
+
+            <div class="mb-5">
+                <h3 class="text-sm text-gray-500 uppercase ps-5 inline-block mb-3">
+                    Management
+                </h3>
+                <div class="menu flex flex-col w-full gap-1.5 px-3.5" data-menu="true" data-menu-accordion-expand-all="false" id="sidebar_primary_menu">
+                    
                     <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/gamer.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Gamer
-                    </span>
-                    </a>
+                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('home') }}">
+                            <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
+                                <i class="ki-filled ki-users"></i>
+                            </span>
+                            <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                                Users
+                            </span>
+                        </a>
                     </div>
+
                     <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/feeds.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Feeds
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/plain.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Plain
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/profiles/modal.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Modal
-                    </span>
-                    </a>
+                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('home') }}">
+                            <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
+                                <i class="ki-filled ki-setting-4"></i>
+                            </span>
+                            <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                                Settings
+                            </span>
+                        </a>
                     </div>
                 </div>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Projects
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/projects/3-columns.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    3 Columns
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/projects/2-columns.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    2 Columns
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/works.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Works
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/teams.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Teams
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/network.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Network
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/activity.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Activity
-                </span>
-                </a>
-                </div>
-                <div class="menu-item flex-col-reverse" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-600 menu-link-hover:text-gray-900">
-                <span class="hidden menu-item-show:!flex">
-                    Show less
-                </span>
-                <span class="flex menu-item-show:hidden">
-                    Show 3 more
-                </span>
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/campaigns/card.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Campaigns - Card
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/campaigns/list.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Campaigns - List
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/public-profile/empty.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Empty
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-            <div class="menu-link gap-2.5 py-2 px-2.5 rounded-md !menu-item-hover:bg-transparent !menu-item-here:bg-transparent">
-                <span class="menu-icon items-start text-gray-400 text-lg menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                <i class="ki-filled ki-setting-2">
-                </i>
-                </span>
-                <span class="menu-title font-medium text-sm text-gray-700 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                My Account
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-            </div>
-            <div class="menu-accordion gap-px ps-7">
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Account Home
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/home/get-started.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Get Started
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/home/user-profile.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    User Profile
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/home/company-profile.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Company Profile
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/home/settings-sidebar.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Settings - With Sidebar
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/home/settings-enterprise.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Settings - Enterprise
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/home/settings-plain.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Settings - Plain
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/home/settings-modal.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Settings - Modal
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Billing
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/billing/basic.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Billing - Basic
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/billing/enterprise.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Billing - Enterprise
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/billing/plans.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Plans
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/billing/history.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Billing History
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Security
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/get-started.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Get Started
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/overview.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Security Overview
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/allowed-ip-addresses.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Allowed IP Addresses
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/privacy-settings.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Privacy Settings
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/device-management.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Device Management
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/backup-and-recovery.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Backup & Recovery
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/current-sessions.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Current Sessions
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/security/security-log.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Security Log
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Members & Roles
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/team-starter.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Teams Starter
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/teams.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Teams
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/team-info.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Team Info
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/members-starter.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Members Starter
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/team-members.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Team Members
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/import-members.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Import Members
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/roles.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Roles
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/permissions-toggle.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Permissions - Toggler
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/members/permissions-check.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Permissions - Check
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/integrations.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Integrations
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/notifications.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Notifications
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/api-keys.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                API Keys
-                </span>
-                </a>
-                </div>
-                <div class="menu-item flex-col-reverse" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-600 menu-link-hover:text-gray-900">
-                <span class="hidden menu-item-show:!flex">
-                    Show less
-                </span>
-                <span class="flex menu-item-show:hidden">
-                    Show 3 more
-                </span>
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/appearance.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Appearance
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/invite-a-friend.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Invite a Friend
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/account/activity.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Activity
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-            <div class="menu-link gap-2.5 py-2 px-2.5 rounded-md !menu-item-hover:bg-transparent !menu-item-here:bg-transparent">
-                <span class="menu-icon items-start text-gray-400 text-lg menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                <i class="ki-filled ki-users">
-                </i>
-                </span>
-                <span class="menu-title font-medium text-sm text-gray-700 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Network
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-            </div>
-            <div class="menu-accordion gap-px ps-7">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/get-started.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Get Started
-                </span>
-                </a>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                User Cards
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-cards/mini-cards.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Mini Cards
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-cards/team-crew.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Team Crew
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-cards/author.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Author
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-cards/nft.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    NFT
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-cards/social.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Social
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                User Table
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-table/team-crew.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Team Crew
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-table/app-roster.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    App Roster
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-table/market-authors.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Market Authors
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-table/saas-users.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    SaaS Users
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-table/store-clients.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Store Clients
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/network/user-table/visitors.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Visitors
-                    </span>
-                </a>
-                </div>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-            <div class="menu-link gap-2.5 py-2 px-2.5 rounded-md !menu-item-hover:bg-transparent !menu-item-here:bg-transparent">
-                <span class="menu-icon items-start text-gray-400 text-lg menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                <i class="ki-filled ki-security-user">
-                </i>
-                </span>
-                <span class="menu-title font-medium text-sm text-gray-700 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Authentication
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-            </div>
-            <div class="menu-accordion gap-px ps-7">
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Classic
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/sign-in.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Sign In
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/sign-up.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Sign Up
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/2fa.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    2FA
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/check-email.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Check Email
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                    Reset Password
-                    </span>
-                    <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                    <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                    </i>
-                    <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                    </i>
-                    </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/reset-password/enter-email.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Enter Email
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/reset-password/check-email.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Check Email
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/reset-password/change-password.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Change Password
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/classic/reset-password/password-changed.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Password is Changed
-                    </span>
-                    </a>
-                    </div>
-                </div>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                Branded
-                </span>
-                <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                </i>
-                <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                </i>
-                </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/sign-in.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Sign In
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/sign-up.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Sign Up
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/2fa.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    2FA
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/check-email.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Check Email
-                    </span>
-                </a>
-                </div>
-                <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                <div class="menu-link py-2 px-2.5 rounded-md border border-transparent !menu-item-here:bg-transparent">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-here:text-gray-900 menu-item-show:text-gray-900 menu-link-hover:text-gray-900">
-                    Reset Password
-                    </span>
-                    <span class="menu-arrow text-gray-400 menu-item-here:text-gray-400 menu-item-show:text-gray-800 menu-link-hover:text-gray-800">
-                    <i class="ki-filled ki-down text-3xs menu-item-show:hidden">
-                    </i>
-                    <i class="ki-filled ki-up text-3xs hidden menu-item-show:inline-flex">
-                    </i>
-                    </span>
-                </div>
-                <div class="menu-accordion gap-px ps-2.5">
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/reset-password/enter-email.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Enter Email
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/reset-password/check-email.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Check Email
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/reset-password/change-password.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Change Password
-                    </span>
-                    </a>
-                    </div>
-                    <div class="menu-item">
-                    <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/branded/reset-password/password-changed.html">
-                    <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                    Password is Changed
-                    </span>
-                    </a>
-                    </div>
-                </div>
-                </div>
-                </div>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/welcome-message.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Welcome Message
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/account-deactivated.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Account Deactivated
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/error-404.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Error 404
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100" href="html/demo10/authentication/error-500.html">
-                <span class="menu-title text-2sm text-gray-800 menu-item-active:font-medium menu-item-active:text-gray-900 menu-link-hover:text-pgray-900">
-                Error 500
-                </span>
-                </a>
-                </div>
-            </div>
-            </div>
-            </div>
             </div>
             <!-- End of Primary Menu -->
             <!-- Secondary Menu -->
-            <div>
-            <h3 class="text-sm text-gray-500 uppercase ps-5 inline-block mb-3">
-            Outline
-            </h3>
-            <div class="menu flex flex-col w-full gap-1.5 px-3.5" data-menu="true" data-menu-accordion-expand-all="true" id="sidebar_secondary_menu">
-            <div class="menu-item">
-            <a class="menu-link py-1 px-2.5" href="https://keenthemes.com/metronic/tailwind/docs/">
-                <span class="rounded-md flex items-center justify-center size-7 bg-coal-black menu-link-hover:border-none me-2">
-                <img alt="" class="size-3.5" src="assets/media/brand-logos/x-dark.svg">
-                </img>
-                </span>
-                <span class="menu-title text-2sm text-gray-700 menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
-                @keenthemes
-                </span>
-            </a>
-            </div>
-            <div class="menu-item">
-            <a class="menu-link py-1 px-2.5" href="https://github.com/keenthemes/">
-                <span class="rounded-md flex items-center justify-center size-7 bg-coal-black menu-link-hover:border-none me-2">
-                <img alt="" class="size-3.5" src="assets/media/brand-logos/slack.svg">
-                </img>
-                </span>
-                <span class="menu-title text-2sm text-gray-700 menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
-                @keenthemes_hub
-                </span>
-            </a>
-            </div>
-            <div class="menu-item">
-            <a class="menu-link py-1 px-2.5" href="https://keenthemes.com/metronic/tailwind/docs/">
-                <span class="rounded-md flex items-center justify-center size-7 bg-coal-black menu-link-hover:border-none me-2">
-                <img alt="" class="size-3.5" src="assets/media/brand-logos/figma.svg"/>
-                </span>
-                <span class="menu-title text-2sm text-gray-700 menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
-                metronic
-                </span>
-            </a>
-            </div>
-            </div>
-            </div>
+            {{-- <div>
+                <h3 class="text-sm text-gray-500 uppercase ps-5 inline-block mb-3">
+                    Outline
+                </h3>
+                <div class="menu flex flex-col w-full gap-1.5 px-3.5" data-menu="true" data-menu-accordion-expand-all="true" id="sidebar_secondary_menu">
+                <div class="menu-item">
+                <a class="menu-link py-1 px-2.5" href="https://keenthemes.com/metronic/tailwind/docs/">
+                    <span class="rounded-md flex items-center justify-center size-7 bg-coal-black menu-link-hover:border-none me-2">
+                    <img alt="" class="size-3.5" src="assets/media/brand-logos/x-dark.svg">
+                    </img>
+                    </span>
+                    <span class="menu-title text-2sm text-gray-700 menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                    @keenthemes
+                    </span>
+                </a>
+                </div>
+                <div class="menu-item">
+                <a class="menu-link py-1 px-2.5" href="https://github.com/keenthemes/">
+                    <span class="rounded-md flex items-center justify-center size-7 bg-coal-black menu-link-hover:border-none me-2">
+                    <img alt="" class="size-3.5" src="assets/media/brand-logos/slack.svg">
+                    </img>
+                    </span>
+                    <span class="menu-title text-2sm text-gray-700 menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                    @keenthemes_hub
+                    </span>
+                </a>
+                </div>
+                <div class="menu-item">
+                <a class="menu-link py-1 px-2.5" href="https://keenthemes.com/metronic/tailwind/docs/">
+                    <span class="rounded-md flex items-center justify-center size-7 bg-coal-black menu-link-hover:border-none me-2">
+                    <img alt="" class="size-3.5" src="assets/media/brand-logos/figma.svg"/>
+                    </span>
+                    <span class="menu-title text-2sm text-gray-700 menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
+                    metronic
+                    </span>
+                </a>
+                </div>
+                </div>
+            </div> --}}
             <!-- End of Secondary Menu -->
         </div>
     </div>
@@ -1078,253 +186,75 @@
                 <img alt="" class="size-9 rounded-full border-2 border-success" src="assets/media/avatars/300-2.png"/>
                 <div class="flex flex-col gap-1.5">
                 <span class="text-sm text-gray-800 font-semibold leading-none">
-                Cody Fisher
+                    {{ auth()->user()->name }}
                 </span>
                 <a class="text-xs text-gray-600 hover:text-primary font-medium leading-none" href="html/demo10/account/home/get-started.html">
-                c.fisher@gmail.com
+                    {{ auth()->user()->email }}
                 </a>
-                </div>
-            </div>
-            <span class="badge badge-xs badge-primary badge-outline">
-                Pro
-            </span>
-            </div>
-            <div class="menu-separator">
-            </div>
-            <div class="flex flex-col">
-            <div class="menu-item">
-                <a class="menu-link" href="html/demo10/public-profile/profiles/default.html">
-                <span class="menu-icon">
-                <i class="ki-filled ki-badge">
-                </i>
-                </span>
-                <span class="menu-title">
-                Public Profile
-                </span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a class="menu-link" href="html/demo10/account/home/user-profile.html">
-                <span class="menu-icon">
-                <i class="ki-filled ki-profile-circle">
-                </i>
-                </span>
-                <span class="menu-title">
-                My Profile
-                </span>
-                </a>
-            </div>
-            <div class="menu-item" data-menu-item-offset="-50px, 0" data-menu-item-placement="left-start" data-menu-item-placement-rtl="right-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:hover">
-                <div class="menu-link">
-                <span class="menu-icon">
-                <i class="ki-filled ki-setting-2">
-                </i>
-                </span>
-                <span class="menu-title">
-                My Account
-                </span>
-                <span class="menu-arrow">
-                <i class="ki-filled ki-right text-3xs rtl:transform rtl:rotate-180">
-                </i>
-                </span>
-                </div>
-                <div class="menu-dropdown menu-default light:border-gray-300 w-full max-w-[220px]">
-                <div class="menu-item">
-                <a class="menu-link" href="html/demo10/account/home/get-started.html">
-                <span class="menu-icon">
-                    <i class="ki-filled ki-coffee">
-                    </i>
-                </span>
-                <span class="menu-title">
-                    Get Started
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link" href="html/demo10/account/home/user-profile.html">
-                <span class="menu-icon">
-                    <i class="ki-filled ki-some-files">
-                    </i>
-                </span>
-                <span class="menu-title">
-                    My Profile
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link" href="#">
-                <span class="menu-icon">
-                    <i class="ki-filled ki-icon">
-                    </i>
-                </span>
-                <span class="menu-title">
-                    Billing
-                </span>
-                <span class="menu-badge" data-tooltip="true" data-tooltip-placement="top">
-                    <i class="ki-filled ki-information-2 text-md text-gray-500">
-                    </i>
-                    <span class="tooltip" data-tooltip-content="true">
-                    Payment and subscription info
-                    </span>
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link" href="html/demo10/account/security/overview.html">
-                <span class="menu-icon">
-                    <i class="ki-filled ki-medal-star">
-                    </i>
-                </span>
-                <span class="menu-title">
-                    Security
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link" href="html/demo10/account/members/teams.html">
-                <span class="menu-icon">
-                    <i class="ki-filled ki-setting">
-                    </i>
-                </span>
-                <span class="menu-title">
-                    Members & Roles
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link" href="html/demo10/account/integrations.html">
-                <span class="menu-icon">
-                    <i class="ki-filled ki-switch">
-                    </i>
-                </span>
-                <span class="menu-title">
-                    Integrations
-                </span>
-                </a>
-                </div>
-                <div class="menu-separator">
-                </div>
-                <div class="menu-item">
-                <a class="menu-link" href="html/demo10/account/security/overview.html">
-                <span class="menu-icon">
-                    <i class="ki-filled ki-shield-tick">
-                    </i>
-                </span>
-                <span class="menu-title">
-                    Notifications
-                </span>
-                <label class="switch switch-sm">
-                    <input checked="" name="check" type="checkbox" value="1"/>
-                </label>
-                </a>
-                </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <a class="menu-link" href="https://devs.keenthemes.com">
-                <span class="menu-icon">
-                <i class="ki-filled ki-message-programming">
-                </i>
-                </span>
-                <span class="menu-title">
-                Dev Forum
-                </span>
-                </a>
-            </div>
-            <div class="menu-item" data-menu-item-offset="-10px, 0" data-menu-item-placement="left-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:hover">
-                <div class="menu-link">
-                <span class="menu-icon">
-                <i class="ki-filled ki-icon">
-                </i>
-                </span>
-                <span class="menu-title">
-                Language
-                </span>
-                <div class="flex items-center gap-1.5 rounded-md border border-gray-300 text-gray-600 p-1.5 text-2xs font-medium shrink-0">
-                English
-                <img alt="" class="inline-block size-3.5 rounded-full" src="assets/media/flags/united-states.svg"/>
-                </div>
-                </div>
-                <div class="menu-dropdown menu-default light:border-gray-300 w-full max-w-[170px]">
-                <div class="menu-item active">
-                <a class="menu-link h-10" href="?dir=ltr">
-                <span class="menu-icon">
-                    <img alt="" class="inline-block size-4 rounded-full" src="assets/media/flags/united-states.svg"/>
-                </span>
-                <span class="menu-title">
-                    English
-                </span>
-                <span class="menu-badge">
-                    <i class="ki-solid ki-check-circle text-success text-base">
-                    </i>
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link h-10" href="?dir=rtl">
-                <span class="menu-icon">
-                    <img alt="" class="inline-block size-4 rounded-full" src="assets/media/flags/saudi-arabia.svg"/>
-                </span>
-                <span class="menu-title">
-                    Arabic(Saudi)
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link h-10" href="?dir=ltr">
-                <span class="menu-icon">
-                    <img alt="" class="inline-block size-4 rounded-full" src="assets/media/flags/spain.svg"/>
-                </span>
-                <span class="menu-title">
-                    Spanish
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link h-10" href="?dir=ltr">
-                <span class="menu-icon">
-                    <img alt="" class="inline-block size-4 rounded-full" src="assets/media/flags/germany.svg"/>
-                </span>
-                <span class="menu-title">
-                    German
-                </span>
-                </a>
-                </div>
-                <div class="menu-item">
-                <a class="menu-link h-10" href="?dir=ltr">
-                <span class="menu-icon">
-                    <img alt="" class="inline-block size-4 rounded-full" src="assets/media/flags/japan.svg"/>
-                </span>
-                <span class="menu-title">
-                    Japanese
-                </span>
-                </a>
-                </div>
                 </div>
             </div>
             </div>
             <div class="menu-separator">
             </div>
             <div class="flex flex-col">
-            <div class="menu-item mb-0.5">
-                <div class="menu-link">
-                <span class="menu-icon">
-                <i class="ki-filled ki-moon">
-                </i>
-                </span>
-                <span class="menu-title">
-                Dark Mode
-                </span>
-                <label class="switch switch-sm">
-                <input data-theme-state="dark" data-theme-toggle="true" name="check" type="checkbox" value="1"/>
-                </label>
+                <div class="menu-item">
+                    <a class="menu-link" href="#">
+                        <span class="menu-icon">
+                            <i class="ki-filled ki-profile-circle">
+                            </i>
+                        </span>
+                        <span class="menu-title">
+                            My Profile
+                        </span>
+                    </a>
                 </div>
             </div>
-            <div class="menu-item px-4 py-1.5">
-                <a class="btn btn-sm btn-light justify-center" href="html/demo10/authentication/classic/sign-in.html">
-                Log out
-                </a>
+            <div class="flex flex-col">
+                <div class="menu-item">
+                    <a class="menu-link" href="#">
+                        <span class="menu-icon">
+                            <i class="ki-filled ki-key-square"></i>
+                        </span>
+                        <span class="menu-title">
+                            Change Password
+                        </span>
+                    </a>
+                </div>
             </div>
+            <div class="flex flex-col">
+                <div class="menu-item">
+                    <a class="menu-link" href="#">
+                        <span class="menu-icon">
+                            <i class="ki-filled ki-security-user"></i>
+                        </span>
+                        <span class="menu-title">
+                            Enable 2FA
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="menu-separator">
+            </div>
+            <div class="flex flex-col">
+                <div class="menu-item mb-0.5">
+                    <div class="menu-link">
+                        <span class="menu-icon">
+                            <i class="ki-filled ki-moon">
+                            </i>
+                        </span>
+                        <span class="menu-title">
+                            Dark Mode
+                        </span>
+                        <label class="switch switch-sm">
+                            <input data-theme-state="dark" data-theme-toggle="true" name="check" type="checkbox" value="1"/>
+                        </label>
+                    </div>
+                </div>
+                <div class="menu-item px-4 py-1.5">
+                    <a class="btn btn-sm btn-light justify-center" href="{{ route('logout') }}">
+                    Log out
+                    </a>
+                </div>
             </div>
             </div>
             </div>

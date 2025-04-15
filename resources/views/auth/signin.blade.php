@@ -123,7 +123,7 @@
        <label class="form-label font-normal text-gray-900">
         Email
        </label>
-       <input class="input" placeholder="email@email.com" type="email" name="email" value="{{ old('email', 'admin@admin.com') }}" required autofocus/>
+       <input class="input" placeholder="email@email.com" type="email" name="email" value="{{ old('email', 'misujon58262@gmail.com') }}" required autofocus/>
       </div>
       <div class="flex flex-col gap-1">
        <div class="flex items-center justify-between gap-1">

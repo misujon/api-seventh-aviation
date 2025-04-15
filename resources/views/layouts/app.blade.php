@@ -35,7 +35,7 @@
                     <!-- Container -->
                     <div class="container-fixed flex items-center justify-between flex-wrap gap-3">
                         <a href="html/demo10.html">
-                            <img class="size-[34px]" src="assets/media/app/mini-logo-circle-success.svg"/>
+                            <img class="size-[34px]" src="{{ asset('assets/media/app/mini-logo-circle-success.svg') }}"/>
                         </a>
                         <button class="btn btn-icon btn-light btn-clear btn-sm -me-2" data-drawer-toggle="#sidebar">
                             <i class="ki-filled ki-menu"></i>

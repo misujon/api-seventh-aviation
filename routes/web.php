@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SslCommerzPaymentController;
@@ -34,6 +35,7 @@ Route::middleware('auth:admin')->group(function(){
     })->name('logout');
 
     Route::get('/', [DashboardController::class, 'index'])->name('home');
+    Route::resource('/bookings', BookingController::class);
 });
 
 // SSLCOMMERZ Start
