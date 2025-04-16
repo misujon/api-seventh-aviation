@@ -302,7 +302,7 @@ class FlightService
             $jsonResponse = json_decode($res->getBody()->getContents(), true);
 
             $getPricingData->pnr = $jsonResponse['data']['associatedRecords'][0]['reference'];
-            $getPricingData->booking_id = $jsonResponse['data']['id'];
+            $getPricingData->booking_id = urldecode($jsonResponse['data']['id']);
             $getPricingData->booking_office_id = $jsonResponse['data']['queuingOfficeId'];
             $getPricingData->associated_records = $jsonResponse['data']['associatedRecords'];
             $getPricingData->passengers = $jsonResponse['data']['travelers'];
@@ -331,7 +331,7 @@ class FlightService
 
     public function makePayment(string $bookingId): array
     {
-        $getBookingData = FlightBooking::where('booking_id', urlencode($bookingId))
+        $getBookingData = FlightBooking::where('booking_id', $bookingId)
                             ->where('status', AppConstants::BOOKING_STATUS_BOOKED)
                             ->first();
         if (!$getBookingData) throw new Exception('Error to find flight data!');

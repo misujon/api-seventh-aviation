@@ -4,7 +4,7 @@
     <div class="flex flex-col gap-2.5" id="sidebar_header">
         <div class="flex items-center gap-2.5 px-3.5 h-[70px]">
             <a href="{{ route('home') }}">
-                <img class="size-[34px]" src="assets/media/app/mini-logo-circle-success.svg"/>
+                <img class="size-[34px]" src="{{ asset('assets/media/app/mini-logo-circle-success.svg') }}"/>
             </a>
             <div class="menu menu-default grow" data-menu="true">
             <div class="menu-item grow" data-menu-item-offset="0, 15px" data-menu-item-placement="bottom-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="hover">

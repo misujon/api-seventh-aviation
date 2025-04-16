@@ -51,4 +51,11 @@ class BookingController extends Controller
 
         return view('bookings.index', compact('bookings', 'summary'));
     }
+
+    public function show($id)
+    {
+        $booking = FlightBooking::findOrFail($id);
+        // dd(AppConstants::renderArrayAsTable($booking->booking_response['data']));
+        return view('bookings.show', compact('booking'));
+    }
 }

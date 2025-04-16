@@ -206,16 +206,16 @@
                                                                 <td class="text-xs text-gray-600 min-w-30">
                                                                     Booking Id
                                                                 </td>
-                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
-                                                                    {{ $bk->booking_id }}
+                                                                <td class="flex items-center gap-2.5 text-xs text-warning">
+                                                                    {{ $bk->booking_id??"N/A" }}
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="text-xs text-gray-600 min-w-30">
                                                                     PNR
                                                                 </td>
-                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
-                                                                    {{ $bk->pnr }}
+                                                                <td class="flex items-center gap-2.5 text-xs font-[1000] text-primary">
+                                                                    {{ $bk->pnr??"N/A" }}
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -230,7 +230,7 @@
                                                                 <td class="text-xs text-gray-600 min-w-30">
                                                                     Trip Type
                                                                 </td>
-                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
+                                                                <td class="flex items-center gap-2.5 text-xs text-warning">
                                                                     {{ $bk->trip_type }}
                                                                 </td>
                                                             </tr>
@@ -319,8 +319,8 @@
                                                                 <td class="text-xs text-gray-600 min-w-30">
                                                                     Payment ID
                                                                 </td>
-                                                                <td class="flex items-center gap-2.5 text-xs text-gray-800">
-                                                                    {{  $bk->payment_id }}
+                                                                <td class="flex items-center gap-2.5 text-xs text-warning">
+                                                                    {{  $bk->payment_id??"N/A" }}
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -343,8 +343,8 @@
                                                     <table class="table details-table">
                                                         <tbody>
                                                             <tr>
-                                                                <td class="text-xs text-gray-800 min-w-30" colspan="2">
-                                                                    {{ $bk->customer_email }}
+                                                                <td class="text-xs text-success min-w-30" colspan="2">
+                                                                    {{ $bk->customer_email??"N/A" }}
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -383,7 +383,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="text-xs text-gray-800 min-w-30" colspan="2">
-                                                                    Address: {{ $bk->customer_address }}, {{ $bk->customer_postcode }}
+                                                                    Address: {{ $bk->customer_address??"N/A" }}, {{ $bk->customer_postcode }}
                                                                 </td>
                                                             </tr>
                                                         </tbody>
