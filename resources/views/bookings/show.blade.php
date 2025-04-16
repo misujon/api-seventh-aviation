@@ -455,29 +455,44 @@
                                                 </span>
                                             </th>
                                         </tr>
-
-                                        <tr>
-                                            <td class="">
-                                                <div class="card grow">
-                                                    <div class="card-body h-25">
-                                                        <ul class="p-3 border-bottom">
-                                                            {!! \App\Constants\AppConstants::renderArrayAsTable($booking->booking_response['data']) !!}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="block">
-                                                <div class="card grow">
-                                                    <div class="card-body h-25">
-                                                        <ul class="p-3 border-bottom">
-                                                            {!! \App\Constants\AppConstants::renderArrayAsTable($booking->payment_full_response) !!}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div data-accordion="true" data-accordion-expand-all="true">
+                        <div class="accordion-item [&amp;:not(:last-child)]:border-b border-b-gray-200" data-accordion-item="true" aria-expanded="false">
+                            <button class="accordion-toggle py-4" data-accordion-toggle="#faq_1_content">
+                                <span class="text-base text-gray-900">
+                                    Additional Booking Information
+                                </span>
+                                <i class="ki-filled ki-plus text-gray-600 text-sm accordion-active:hidden block"></i>
+                                <i class="ki-filled ki-minus text-gray-600 text-sm accordion-active:block hidden"></i>
+                            </button>
+                            <div class="accordion-content hidden" id="faq_1_content" style="height: 0px;">
+                                <ul class="p-3 border-bottom">
+                                    {!! \App\Constants\AppConstants::renderArrayAsTable($booking->booking_response['data']??[]) !!}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item [&amp;:not(:last-child)]:border-b border-b-gray-200" data-accordion-item="true" aria-expanded="false">
+                            <button class="accordion-toggle py-4" data-accordion-toggle="#faq_2_content">
+                                <span class="text-base text-gray-900">
+                                    Additional Payment Information
+                                </span>
+                                <i class="ki-filled ki-plus text-gray-600 text-sm accordion-active:hidden block"></i>
+                                <i class="ki-filled ki-minus text-gray-600 text-sm accordion-active:block hidden"></i>
+                            </button>
+                            <div class="accordion-content hidden" id="faq_2_content" style="height: 0px;">
+                                <ul class="p-3 border-bottom">
+                                    {!! \App\Constants\AppConstants::renderArrayAsTable($booking->payment_full_response['data']??[]) !!}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
