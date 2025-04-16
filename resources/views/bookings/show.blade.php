@@ -441,20 +441,6 @@
                                                 
                                             </td>
                                         </tr>
-
-                                        <tr>
-                                    
-                                            <th class="min-w-[300px]">
-                                                <span class="sort-label font-bold text-gray-700">
-                                                    Additional Booking Information
-                                                </span>
-                                            </th>
-                                            <th class="min-w-[300px]">
-                                                <span class="sort-label font-bold text-gray-700">
-                                                    Additional Payment Information
-                                                </span>
-                                            </th>
-                                        </tr>
                                     </tbody>
                             </table>
                         </div>
@@ -468,7 +454,7 @@
                         <div class="accordion-item [&amp;:not(:last-child)]:border-b border-b-gray-200" data-accordion-item="true" aria-expanded="false">
                             <button class="accordion-toggle py-4" data-accordion-toggle="#faq_1_content">
                                 <span class="text-base text-gray-900">
-                                    Additional Booking Information
+                                    <i class="ki-filled ki-notepad"></i> Additional Booking Information
                                 </span>
                                 <i class="ki-filled ki-plus text-gray-600 text-sm accordion-active:hidden block"></i>
                                 <i class="ki-filled ki-minus text-gray-600 text-sm accordion-active:block hidden"></i>
@@ -483,14 +469,14 @@
                         <div class="accordion-item [&amp;:not(:last-child)]:border-b border-b-gray-200" data-accordion-item="true" aria-expanded="false">
                             <button class="accordion-toggle py-4" data-accordion-toggle="#faq_2_content">
                                 <span class="text-base text-gray-900">
-                                    Additional Payment Information
+                                    <i class="ki-filled ki-credit-cart"></i> Additional Payment Information
                                 </span>
                                 <i class="ki-filled ki-plus text-gray-600 text-sm accordion-active:hidden block"></i>
                                 <i class="ki-filled ki-minus text-gray-600 text-sm accordion-active:block hidden"></i>
                             </button>
                             <div class="accordion-content hidden" id="faq_2_content" style="height: 0px;">
                                 <ul class="p-3 border-bottom">
-                                    {!! \App\Constants\AppConstants::renderArrayAsTable($booking->payment_full_response['data']??[]) !!}
+                                    {!! \App\Constants\AppConstants::renderArrayAsTable($booking->payment_full_response??[]) !!}
                                 </ul>
                             </div>
                         </div>
