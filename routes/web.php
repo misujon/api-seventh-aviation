@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AirlineController;
+use App\Http\Controllers\AirportController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +38,8 @@ Route::middleware('auth:admin')->group(function(){
 
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::resource('/bookings', BookingController::class);
+    Route::resource('/airlines', AirlineController::class);
+    Route::resource('/airports', AirportController::class);
 });
 
 // SSLCOMMERZ Start

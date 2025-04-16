@@ -46,15 +46,55 @@
                         </a>
                     </div>
 
-                    <div class="menu-item {{ request()->is('bookings')?'active':'' }}">
-                        <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('bookings.index') }}">
+                    <div class="menu-item menu-item-accordion {{ request()->is('bookings')?'show':'' }}" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                        {{-- <a class="menu-link gap-2.5 py-2 px-2.5 rounded-md menu-item-active:bg-gray-100 menu-link-hover:bg-gray-100 !menu-item-here:bg-transparent" href="{{ route('bookings.index') }}">
                             <span class="menu-icon items-start text-lg text-gray-600 menu-item-active:text-gray-900 menu-item-here:text-gray-900">
                                 <i class="ki-filled ki-wallet"></i>
                             </span>
                             <span class="menu-title text-sm text-gray-800 font-medium menu-item-here:text-gray-900 menu-item-active:text-gray-900 menu-link-hover:text-gray-900">
                                 Flight Bookings
                             </span>
-                        </a>
+                        </a> --}}
+
+                        <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]" tabindex="0">
+                            <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                                <i class="ki-filled ki-paper-plane"></i>
+                            </span>
+                            <span class="menu-title text-sm font-medium text-gray-800 menu-item-active:text-primary menu-link-hover:!text-primary">
+                                Flight
+                            </span>
+                            <span class="menu-arrow text-gray-400 w-[20px] shrink-0 justify-end ms-1 me-[-10px]">
+                                <i class="ki-filled ki-plus text-2xs menu-item-show:hidden"></i>
+                                <i class="ki-filled ki-minus text-2xs hidden menu-item-show:inline-flex"></i>
+                            </span>
+                        </div>
+
+                        <div class="menu-accordion gap-0.5 ps-[10px] relative before:absolute before:start-[20px] before:top-0 before:bottom-0 before:border-s before:border-gray-200 show" style="">
+                            <div class="menu-item {{ request()->is('bookings')?'active':'' }}">
+                                <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px]" href="{{ route('bookings.index') }}" tabindex="0">
+                                    <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
+                                    <span class="menu-title text-2sm font-normal text-gray-800 menu-item-active:text-primary menu-item-active:font-semibold menu-link-hover:!text-primary">
+                                        Bookings
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="menu-item {{ request()->is('airlines')?'active':'' }}">
+                                <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px]" href="{{ route('airlines.index') }}" tabindex="0">
+                                    <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
+                                    <span class="menu-title text-2sm font-normal text-gray-800 menu-item-active:text-primary menu-item-active:font-semibold menu-link-hover:!text-primary">
+                                        Airlines
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="menu-item {{ request()->is('airports')?'active':'' }}">
+                                <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px]" href="{{ route('airports.index') }}" tabindex="0">
+                                    <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
+                                    <span class="menu-title text-2sm font-normal text-gray-800 menu-item-active:text-primary menu-item-active:font-semibold menu-link-hover:!text-primary">
+                                        Airports
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="menu-item">

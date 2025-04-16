@@ -76,14 +76,6 @@
                 <form method="GET" action="{{ route('bookings.index') }}" class="">
                     <div class="card-header flex-wrap gap-2">
                         <div class="flex items-center gap-2 order-2 md:order-1 card-header flex-wrap gap-2">
-                            Show 
-                            <select class="select select-sm w-16 me-3" data-datatable-size="true" name="length">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-
                             <div class="flex items-center gap-4 order-1 md:order-2">
                                 <span data-datatable-info="true">Page {{ $bookings->currentPage() }} of {{ $bookings->lastPage() }}</span>
                                 <div class="pagination" data-datatable-pagination="true">
@@ -133,6 +125,15 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap gap-2 lg:gap-5">
+                            <div class="flex gap-2 items-center">
+                                <span class="text-sm">Show </span>
+                                <select class="select select-sm w-16" data-datatable-size="true" name="length">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
                             <div class="flex">
                                 <label class="input input-sm">
                                     <i class="ki-filled ki-magnifier"></i>
