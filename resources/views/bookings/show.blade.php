@@ -355,7 +355,7 @@
                                                 @endforeach
                                             </td>
                                             <td class="custom-td">
-                                                @foreach ($bk->passengers as $customer)
+                                                @foreach ($bk->passengers??[] as $customer)
                                                     <div class="card grow">
                                                         <div class="card-body pt-4 pb-3">
                                                             <table class="table details-table">

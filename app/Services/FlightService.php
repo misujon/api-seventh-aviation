@@ -250,7 +250,7 @@ class FlightService
         ];
 
         if (Auth::check()) $bookingData['customer_id'] = Auth::user()->id;
-        FlightBooking::updateOrCreate(
+        $booking = FlightBooking::updateOrCreate(
             ['search_id' => $searchId, 'flight_id_string' => $flightIdString],
             $bookingData
         );
