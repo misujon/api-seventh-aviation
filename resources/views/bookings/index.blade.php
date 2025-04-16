@@ -8,15 +8,32 @@
         .details-itinerary{
             font-size: 12px;
             padding: 5px 0;
+        }
+        html.dark .details-itinerary{
             border-bottom: 1px solid #20222e;
         }
-        .details-itinerary:last-child{
-            border-bottom: none;
+        html:not(.dark) .details-itinerary{
+            border-bottom: 1px solid #e3e3e3;
         }
 
-        .details-table-row:hover, .details-table-row:hover td, .details-table-row:hover td .card{
-            background: #1f212a
+        .details-itinerary:last-child{
+            border-bottom: none !important;
         }
+
+        /* Dark mode styles */
+        html.dark .details-table-row-dark:hover,
+        html.dark .details-table-row-dark:hover td,
+        html.dark .details-table-row-dark:hover td .card {
+            background-color: #1f212a !important;
+        }
+
+        /* Light mode styles */
+        html:not(.dark) .details-table-row-dark:hover,
+        html:not(.dark) .details-table-row-dark:hover td,
+        html:not(.dark) .details-table-row-dark:hover td .card {
+            background-color: #f9f9f9 !important; /* Set your desired light color */
+        }
+
     </style>
 @endsection
 
@@ -196,7 +213,7 @@
                                     
                                 <tbody>
                                     @forelse ($bookings as $bk)
-                                    <tr class="cursor-pointer transition-colors duration-200 details-table-row" onclick="window.location='{{ route('bookings.show', $bk->id) }}';">
+                                    <tr class="cursor-pointer transition-colors duration-200 details-table-row-dark" onclick="window.location='{{ route('bookings.show', $bk->id) }}';">
                                         <td>
                                             <div class="card grow">
                                                 <div class="card-body pt-4 pb-3">

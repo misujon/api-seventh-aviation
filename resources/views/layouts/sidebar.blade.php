@@ -3,17 +3,11 @@
     <!-- Sidebar Header -->
     <div class="flex flex-col gap-2.5" id="sidebar_header">
         <div class="flex items-center gap-2.5 px-3.5 h-[70px]">
-            <a href="{{ route('home') }}">
-                <img class="size-[34px]" src="{{ asset('assets/media/app/mini-logo-circle-success.svg') }}"/>
-            </a>
+            {{-- <a href="{{ route('home') }}">
+                <img class="size-[34px]" src="{{ asset('assets/logo.png') }}"/>
+            </a> --}}
             <div class="menu menu-default grow" data-menu="true">
-            <div class="menu-item grow" data-menu-item-offset="0, 15px" data-menu-item-placement="bottom-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="hover">
-                <div class="menu-label cursor-pointer text-gray-900 font-medium grow justify-between">
-                    <span class="text-lg font-medium text-inverse grow">
-                        Flight Falcon
-                    </span>
-                </div>
-            </div>
+                <img class="h-[50px] always-invert" src="{{ asset('assets/logo.png') }}"/>
             </div>
         </div>
         {{-- <div class="flex items-center gap-2.5 px-3.5">
@@ -178,17 +172,17 @@
         <div class="menu" data-menu="true">
             <div class="menu-item" data-menu-item-offset="-10px, 15px" data-menu-item-placement="right-end" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:click">
             <div class="menu-toggle btn btn-icon rounded-full">
-            <img alt="" class="size-8 rounded-full justify-center border border-gray-500 shrink-0" src="assets/media/avatars/gray/5.png"/>
+            <img alt="" class="size-8 rounded-full justify-center border border-gray-500 shrink-0" src="{{ asset('assets/media/avatars/gray/5.png') }}"/>
             </div>
             <div class="menu-dropdown menu-default light:border-gray-300 w-screen max-w-[250px]">
             <div class="flex items-center justify-between px-5 py-1.5 gap-1.5">
             <div class="flex items-center gap-2">
-                <img alt="" class="size-9 rounded-full border-2 border-success" src="assets/media/avatars/300-2.png"/>
+                <img alt="" class="size-9 rounded-full border-2 border-success" src="{{ asset('assets/media/avatars/300-2.png') }}"/>
                 <div class="flex flex-col gap-1.5">
                 <span class="text-sm text-gray-800 font-semibold leading-none">
                     {{ auth()->user()->name }}
                 </span>
-                <a class="text-xs text-gray-600 hover:text-primary font-medium leading-none" href="html/demo10/account/home/get-started.html">
+                <a class="text-xs text-gray-600 hover:text-primary font-medium leading-none" href="#">
                     {{ auth()->user()->email }}
                 </a>
                 </div>
@@ -326,7 +320,7 @@
                 </div>
                 <div class="menu-dropdown menu-default w-full max-w-[175px]">
                     <div class="menu-item">
-                    <a class="menu-link" href="html/demo10/account/home/settings-sidebar.html">
+                    <a class="menu-link" href="#">
                     <span class="menu-icon">
                     <i class="ki-filled ki-sms">
                     </i>
@@ -337,7 +331,7 @@
                     </a>
                     </div>
                     <div class="menu-item">
-                    <a class="menu-link" href="html/demo10/account/home/settings-sidebar.html">
+                    <a class="menu-link" href="#">
                     <span class="menu-icon">
                     <i class="ki-filled ki-message-notify">
                     </i>
@@ -348,7 +342,7 @@
                     </a>
                     </div>
                     <div class="menu-item">
-                    <a class="menu-link" href="html/demo10/account/home/settings-sidebar.html">
+                    <a class="menu-link" href="#">
                     <span class="menu-icon">
                     <i class="ki-filled ki-notification-status">
                     </i>
@@ -442,7 +436,7 @@
                 </div>
                 <div class="flex grow gap-2.5 px-5">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-5.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-5.png') }}"/>
                     <span class="size-1.5 badge badge-circle badge-success absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -483,7 +477,7 @@
                 </div>
                 <div class="flex grow gap-2.5 px-5" id="notification_request_3">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-27.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-27.png') }}"/>
                     <span class="size-1.5 badge badge-circle bg-gray-400 absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -524,7 +518,7 @@
                 </div>
                 <div class="flex grow gap-2.5 px-5">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-1.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-1.png') }}"/>
                     <span class="size-1.5 badge badge-circle bg-gray-400 absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -546,7 +540,7 @@
                     </span>
                     </div>
                     <div class="card shadow-none flex items-center flex-row gap-1.5 p-2.5 rounded-lg bg-light-active">
-                    <img class="h-5" src="assets/media/file-types/pdf.svg"/>
+                    <img class="h-5" src="{{ asset('assets/media/file-types/pdf.svg') }}"/>
                     <a class="hover:text-primary-active font-medium text-gray-700 text-xs me-1" href="#">
                     Launch_nov24.pptx
                     </a>
@@ -560,7 +554,7 @@
                 </div>
                 <div class="flex grow gap-2.5 px-5">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-11.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-11.png') }}"/>
                     <span class="size-1.5 badge badge-circle badge-success absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -588,7 +582,7 @@
                 </div>
                 <div class="flex grow gap-2.5 px-5">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-14.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-14.png') }}"/>
                     <span class="size-1.5 badge badge-circle bg-gray-400 absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -611,7 +605,7 @@
                     </div>
                     <div class="card shadow-none flex items-center flex-row gap-1.5 p-2.5 rounded-lg bg-light-active">
                     <div class="flex items-center justify-center w-[26px] h-[30px] shrink-0 bg-light rounded border border-gray-200">
-                    <img class="h-5" src="assets/media/file-types/figma.svg"/>
+                    <img class="h-5" src="{{ asset('assets/media/file-types/figma.svg') }}"/>
                     </div>
                     <a class="hover:text-primary-active font-medium text-gray-700 text-xs me-1" href="#">
                     Launcher-UIkit.fig
@@ -642,7 +636,7 @@
                 <div class="flex flex-col gap-5 pt-3 pb-4">
                 <div class="flex grow gap-2.5 px-5" id="notification_request_13">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-25.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-25.png') }}"/>
                     <span class="size-1.5 badge badge-circle badge-success absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -709,7 +703,7 @@
                 </div>
                 <div class="flex grow gap-2.5 px-5">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-34.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-34.png') }}"/>
                     <span class="size-1.5 badge badge-circle bg-gray-400 absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -732,7 +726,7 @@
                     </div>
                     <div class="card shadow-none flex items-center justify-between flex-row gap-1.5 p-2.5 rounded-lg bg-light-active">
                     <div class="flex items-center gap-1.5">
-                    <img class="h-6" src="assets/media/file-types/xls.svg"/>
+                    <img class="h-6" src="{{ asset('assets/media/file-types/xls.svg') }}"/>
                     <div class="flex flex-col gap-0.5">
                     <a class="hover:text-primary-active font-medium text-gray-700 text-xs" href="#">
                         Redesign-2024.xls
@@ -1188,7 +1182,7 @@
                 <div class="flex flex-col gap-5 pt-3 pb-4">
                 <div class="flex grow gap-2.5 px-5">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-1.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-1.png') }}"/>
                     <span class="size-1.5 badge badge-circle bg-gray-400 absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
@@ -1250,7 +1244,7 @@
                 </div>
                 <div class="flex grow gap-2.5 px-5" id="notification_request_17">
                 <div class="relative shrink-0 mt-0.5">
-                    <img alt="" class="rounded-full size-8" src="assets/media/avatars/300-19.png"/>
+                    <img alt="" class="rounded-full size-8" src="{{ asset('assets/media/avatars/300-19.png') }}"/>
                     <span class="size-1.5 badge badge-circle badge-success absolute top-7 end-0.5 ring-1 ring-light transform -translate-y-1/2">
                     </span>
                 </div>
