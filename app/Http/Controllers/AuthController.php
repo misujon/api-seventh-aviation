@@ -6,6 +6,7 @@ use App\Constants\AppConstants;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Socialite;
 
 class AuthController extends Controller
 {
@@ -42,6 +43,26 @@ class AuthController extends Controller
         {
             Log::error('Error in customer data fetch!', [$e]);
             return AppConstants::apiResponse(404, 'Error in customer data fetch, please try again!');
+        }
+    }
+
+    public function socialSigninProvider($provider)
+    {
+        $url = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+        return AppConstants::apiResponse(200, 'Url Generated!', ['url' => $url]);
+    }
+
+    public function handleProviderCallback($provider)
+    {
+        try 
+        {
+            $login = $this->authService->socialLogin($provider);
+            return AppConstants::apiResponse(200, 'Social Login Successful!', $login);
+        } 
+        catch (\Exception $e) 
+        {
+            Log::error('Error in complete social login!', [$e]);
+            return AppConstants::apiResponse(404, 'Error in complete social login, please try again!');
         }
     }
 }

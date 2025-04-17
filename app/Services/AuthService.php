@@ -10,6 +10,8 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Socialite;
+use Str;
 
 class AuthService
 {
@@ -115,4 +117,56 @@ class AuthService
 
         return $customer;
     }
+
+    public function socialLogin($provider): array
+    {
+        $socialUser = Socialite::driver($provider)->stateless()->user();
+        $user = User::where('provider_id', $socialUser->getId())->first();
+
+        $raw = $socialUser->user;
+
+        // Handle name parts differently for Facebook
+        if ($provider === 'google') 
+        {
+            $givenName = $raw['given_name'] ?? '';
+            $familyName = $raw['family_name'] ?? '';
+        } 
+        elseif ($provider === 'facebook') 
+        {
+            // Facebook does not split names usually
+            $fullName = $socialUser->getName();
+            $nameParts = explode(' ', $fullName, 2);
+            $givenName = $nameParts[0] ?? '';
+            $familyName = $nameParts[1] ?? '';
+        } 
+        else 
+        {
+            $givenName = '';
+            $familyName = '';
+        }
+
+        if (!$user) 
+        {
+            $user = User::updateOrCreate(
+                ['email' => $socialUser->getEmail()],
+                [
+                    'name' => $givenName,
+                    'last_name' => $familyName,
+                    'provider' => $provider,
+                    'provider_id' => $socialUser->getId(),
+                    'email_verified_at' => now(),
+                    'password' => bcrypt(Str::random(24)),
+                    'logo' => $socialUser->getAvatar() ?? null
+                ]
+            );
+        }
+
+        // Generate token for API
+        $token = $user->createToken('authToken')->plainTextToken;
+        return [
+            'customer' => $user,
+            'token' => $token
+        ];
+    }
+
 }

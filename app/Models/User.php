@@ -34,7 +34,10 @@ class User extends Authenticatable
         'expiery_date',
         'issue_date',
         'issue_place',
-        'status'
+        'status',
+        'provider',
+        'provider_id',
+        'logo'
     ];
 
     /**

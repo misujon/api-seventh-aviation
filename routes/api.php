@@ -18,6 +18,8 @@ use App\Http\Controllers\FlightController;
 */
 
 Route::post('/user/login', [AuthController::class, 'index']);
+Route::get('auth/redirect/{provider}', [AuthController::class, 'socialSigninProvider']);
+Route::get('auth/callback/{provider}', [AuthController::class, 'handleProviderCallback']);
 
 Route::prefix('flight')->group(function(){
     Route::get('/apirports', [FlightController::class, 'searchAirports']);
