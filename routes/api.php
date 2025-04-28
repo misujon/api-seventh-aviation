@@ -5,6 +5,7 @@ use App\Http\Controllers\VerifyPaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FlightController;
+use App\Http\Controllers\Duffel\FlightController as DuffelFlightController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,11 @@ Route::middleware('auth:sanctum')->prefix('flight')->group(function(){
     Route::post('/payment/{bookingId}', [FlightController::class, 'makePayment']);
 
     Route::get('/mybookings', [FlightController::class, 'myBookings']);
+});
+
+Route::prefix('v1/flight')->group(function(){
+    Route::post('/search', [DuffelFlightController::class, 'index']);
+    Route::get('/{offerId}', [DuffelFlightController::class, 'show'])->middleware('auth:sanctum');
 });
 
 Route::prefix('callback')->group(function(){

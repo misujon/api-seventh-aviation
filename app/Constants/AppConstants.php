@@ -113,4 +113,26 @@ class AppConstants
 
         return $html;
     }
+
+    public static function renderArrayAsKeyValue($array, $prefix = '')
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            $newKey = $prefix ? $prefix . '.' . $key : $key;
+
+            if (is_array($value)) {
+                // If value is an array, recursively flatten it, and mark as 'Array'
+                // $result[$newKey] = self::renderArrayAsKeyValue($value, $newKey);
+                foreach ($value as $index => $stop) {
+                    $result = array_merge($result, self::renderArrayAsKeyValue($stop, "multistops.$index"));
+                }
+            } else {
+                // Else, store the key-value pair
+                $result[$newKey] = $value;
+            }
+        }
+
+        return $result;
+    }
 }

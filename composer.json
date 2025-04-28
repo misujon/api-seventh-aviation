@@ -13,6 +13,7 @@
         "laravel/socialite": "^5.19",
         "laravel/telescope": "^5.7",
         "laravel/tinker": "^2.8",
+        "misujon/laravel-duffel": "dev-main",
         "predis/predis": "^2.2",
         "socialiteproviders/facebook": "^4.1",
         "yajra/laravel-datatables": "^10.1"
@@ -69,6 +70,12 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../laravel-duffel"
+        }
+    ],
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

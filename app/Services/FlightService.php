@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Library\SslCommerz\SslCommerzNotification;
 use Illuminate\Support\Facades\Schema;
+use Misujon\LaravelDuffel\Facades\Duffel;
 
 class FlightService
 {
@@ -38,6 +39,7 @@ class FlightService
         int $child = 0, 
         int $infant = 0,
         string $tripType = 'oneway') {
+
         $searchId = $this->generateSearchId();
         if (Cache::has('flight-search:'.$searchId))
         {
@@ -123,7 +125,8 @@ class FlightService
     public function generateSearchId()
     {
         $req = request();
-        $dataReq = implode('-', $req->all());
+        $result = AppConstants::renderArrayAsKeyValue($req->all());
+        $dataReq = implode('-', $result);
         $clientIp = $req->ip();
         return md5($dataReq.'/'.$clientIp);
     }
@@ -431,5 +434,104 @@ class FlightService
             ->paginate(10);
     
         return $bookings->toArray();
+    }
+
+    public function searchNew(
+        string $from = null, 
+        string $to = null, 
+        string $departure = null, 
+        string $return = null, 
+        int $adult = 1, 
+        int $child = 0,
+        string $tripType = 'oneway',
+        array $multistops = null,
+        string $cabinClass = 'economy',
+    ) 
+    {
+        $searchId = $this->generateSearchId();
+        if (Cache::has('flight-search-duffel:'.$searchId))
+        {
+            return Cache::get('flight-search-duffel:'.$searchId);
+        }
+
+        $slice = [];
+        if ($tripType == "oneway")
+        {
+            $slice[] = [
+                'origin' => $from,
+                'destination' => $to,
+                'departure_date' => $departure
+            ];
+        }
+        elseif ($tripType == "roundtrip")
+        {
+            $slice[] = [
+                'origin' => $from,
+                'destination' => $to,
+                'departure_date' => $departure
+            ];
+            $slice[] = [
+                'origin' => $to,
+                'destination' => $from,
+                'departure_date' => $return
+            ];
+        }
+        elseif ($tripType == "multistop")
+        {
+            foreach($multistops as $value)
+            {
+                $from = $value['from'];
+                $to = $value['to'];
+                $departure = $value['departure'];
+
+                $slice[] = [
+                    'origin' => $from,
+                    'destination' => $to,
+                    'departure_date' => $departure
+                ];
+            }
+        }
+        else
+        {
+            throw new Exception('Error flight search query: trip_type!');
+        }
+
+        $passengers = [];
+        if ($adult > 0)
+        {
+            foreach (range(1, $adult) as $i)
+            {
+                $passengers[] = [
+                    'type' => 'adult'
+                ];
+            }
+        }
+
+        if ($child > 0)
+        {
+            foreach (range(1, $child) as $i)
+            {
+                $passengers[] = [
+                    'type' => 'child'
+                ];
+            }
+        }
+        
+        $data = [
+            "data" => [
+                'slices' => $slice,
+                'passengers' => $passengers,
+                'cabin_class' => $cabinClass,
+            ]
+        ];
+
+        $result = Duffel::searchFlights($data);
+        if ($result && $result['data']) 
+        {
+            Cache::put('flight-search-duffel:'.$searchId, $result['data'], now()->addMinutes(15));
+            return $result['data'];
+        }
+        
+        return [];
     }
 }
